@@ -11,6 +11,14 @@ namespace YS
     {
         public const string Mizar_Normal = "Characters/Mizare/Right/mizare_origin.png";
     }
+    public class ResourcePath
+    {
+        public static string ItemDataPath => "Data/ItemData";
+        public static string BackgroundDataPath => "Data/BackgroundData";
+        public static string ScriptDataPath => "Data/ScriptData";
+
+        public static string BGItemPrefabPath => "Prefab/BGItemPrefab";
+    }
     [System.Serializable, DisableContextMenu]
     public struct VariableData
     {
@@ -18,6 +26,28 @@ namespace YS
         public string name;
         [SerializeReference, LabelText("변수 타입")]
         public CustomVariable value;
+    }
+    [System.Serializable, DisableContextMenu]
+    public struct BackgroundData
+    {
+        [LabelText("배경 이름"), DisableContextMenu]
+        public string name;
+        [LabelText("배경 이미지")]
+        public Sprite img;
+        [LabelText("아이템들")]
+        public List<BackgroundItemData> items;
+    }
+    [System.Serializable]
+    public struct BackgroundItemData
+    {
+        public ITEM_INDEX index;
+        public Vector3 pos;
+
+        public BackgroundItemData(Item item)
+        {
+            index = item.index;
+            pos = item.transform.position;
+        }
     }
     public class ResourceManager
     {

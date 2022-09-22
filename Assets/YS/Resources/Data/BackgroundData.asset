@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a635dddca2310f847a5ca4c4df482941, type: 3}
+  m_Name: BackgroundData
+  m_EditorClassIdentifier: 
+  datas:
+  - name: Association_of_Beehive
+    img: {fileID: 21300000, guid: 5fea2d2de1d8e254daf8686c272da202, type: 3}
+    items: []
+  - name: Backhill
+    img: {fileID: 21300000, guid: c9dccbe0e0d7f5c4e92ad2d2875212ce, type: 3}
+    items:
+    - index: 0
+      pos: {x: -707, y: -404, z: 0}
+    - index: 1
+      pos: {x: 464, y: -304, z: 0}
+  - name: Backhill_no item
+    img: {fileID: 21300000, guid: c9dccbe0e0d7f5c4e92ad2d2875212ce, type: 3}
+    items: []
+  - name: Backstreet_Sewer
+    img: {fileID: 21300000, guid: f1dba7b78399391409052cb91b71f35e, type: 3}
+    items: []
+  - name: Backstreet_Sewer_no item
+    img: {fileID: 21300000, guid: f1dba7b78399391409052cb91b71f35e, type: 3}
+    items: []
+  - name: CutScene1
+    img: {fileID: 21300000, guid: 1ca579ced65b14c449a625de968350f9, type: 3}
+    items: []
+  - name: CutScene2
+    img: {fileID: 21300000, guid: 1ee39a2bfb4535c42b39f39b7a16a5af, type: 3}
+    items: []
+  - name: CutScene3
+    img: {fileID: 21300000, guid: 87e28849085396a4198e08e31722cc72, type: 3}
+    items: []
+  - name: Dark_Alley
+    img: {fileID: 21300000, guid: e8fc6b0de54c79a4dab388470186107f, type: 3}
+    items:
+    - index: 2
+      pos: {x: -439, y: -275, z: 0}
+    - index: 3
+      pos: {x: 354, y: -462, z: 0}
+    - index: 4
+      pos: {x: -653, y: -362, z: 0}
+  - name: Dark_Alley_no item
+    img: {fileID: 21300000, guid: e8fc6b0de54c79a4dab388470186107f, type: 3}
+    items: []
+  - name: Drugstore
+    img: {fileID: 21300000, guid: 4f4ef42d5ce8b6442beb43d2c5ca98d7, type: 3}
+    items: []
+  - name: Inside_of_Sewer
+    img: {fileID: 21300000, guid: 5a0482aa8365b1e4c9fb235a9bd7cba4, type: 3}
+    items:
+    - index: 5
+      pos: {x: 285, y: -370, z: 0}
+    - index: 6
+      pos: {x: -656, y: -389, z: 0}
+    - index: 7
+      pos: {x: 689, y: -388, z: 0}
+  - name: Market
+    img: {fileID: 21300000, guid: d977c0534d9d5664384a480fece24084, type: 3}
+    items: []
+  - name: Mizare_Office
+    img: {fileID: 21300000, guid: 6fb2bf22f1051c54a8e91b5f1c03d7f8, type: 3}
+    items: []
+  - name: Monticule
+    img: {fileID: 21300000, guid: 15dfa45245701344db0bd4dbef19a089, type: 3}
+    items:
+    - index: 0
+      pos: {x: -591, y: -256, z: 0}
+    - index: 1
+      pos: {x: 378, y: -408, z: 0}
+  - name: Night_Alley
+    img: {fileID: 21300000, guid: a246daf5b8d48fa4b89119a1ea54de0e, type: 3}
+    items:
+    - index: 2
+      pos: {x: -364, y: -249, z: 0}
+    - index: 3
+      pos: {x: 409, y: -219, z: 0}
+    - index: 4
+      pos: {x: 175, y: -103, z: 0}
+  - name: Teahouse
+    img: {fileID: 21300000, guid: 6a3c9b80c6b7a864c91e5043ea4c8b49, type: 3}
+    items: []
+  key: 
+  bgObj: {fileID: 0}

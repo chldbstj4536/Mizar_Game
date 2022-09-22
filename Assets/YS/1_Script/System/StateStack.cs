@@ -18,17 +18,15 @@ namespace YS
         #endregion
 
         #region Events
-        public event PushPopEvent OnBeforePushEvent;
-        public event PushPopEvent OnAfterPushEvent;
+        public event PushPopEvent OnPushEvent;
         public event PushPopEvent OnPopEvent;
         #endregion
 
         #region Methods
         public void PushState(uint stateIndex)
         {
-            OnBeforePushEvent?.Invoke((int)stateIndex);
             stateStack.Push((int)stateIndex);
-            OnAfterPushEvent?.Invoke((int)stateIndex);
+            OnPushEvent?.Invoke((int)stateIndex);
         }
 
         public int PopState()

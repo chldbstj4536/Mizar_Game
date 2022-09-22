@@ -46,8 +46,7 @@ namespace YS
         public ItemData itemData;
         [LabelText("인벤토리 컴포넌트")]
         public InventoryComponent invenComp;
-        [LabelText("배경오브젝트")]
-        public GameObject bgUI;
+        private BackgroundComponent bc;
         private Material bgMtrl;
 
         [HideInInspector]
@@ -63,7 +62,6 @@ namespace YS
         #endregion
 
         #region Properties
-        public int ItemCount => bgUI.transform.childCount;
         public Dictionary<string, CustomVariable> VariablesTable => varTable;
         public SaveLoadData CurrentData
         {
@@ -73,9 +71,30 @@ namespace YS
 
                 foreach (var data in VariablesTable)
                     vd.Add(new VariableData() { name = data.Key, value = data.Value });
-
-                return new SaveLoadData(scriptData.CurrentIndex, vd);
+                BackgroundData bgData = new BackgroundData();
+                bgData.name = bc.BackgroundName;
+                bgData.img = bc.Image;
+                bgData.items = new List<BackgroundItemData>(bc.RemainItemCount);
+                foreach (var item in bc.Items)
+                    bgData.items.Add(new BackgroundItemData(item));
+                return new SaveLoadData(scriptData.CurrentIndex, bgData, IsBackgroundFadeOut, invenComp.Items, vd);
             }
+        }
+        /// <summary>
+        /// 배경 페이드효과 진행도 설정
+        /// </summary>
+        public float BackgroundCurrentTime
+        {
+            get => bgMtrl.GetFloat("_CurTime");
+            set => bgMtrl.SetFloat("_CurTime", value);
+        }
+        /// <summary>
+        /// 배경 페이드 설정
+        /// </summary>
+        public bool IsBackgroundFadeOut
+        {
+            get => bgMtrl.GetFloat("_IsOut") == 0.0f ? false : true;
+            set => bgMtrl.SetFloat("_IsOut", value ? 1.0f : 0.0f);
         }
         #endregion
 
@@ -89,9 +108,10 @@ namespace YS
         void Start()
         {
             um = InGameUIManager.Instance;
+            bc = BackgroundComponent.Instance;
 
-            SetBGFadeInOut(true);
-            SetBGCurTime(0.0f);
+            IsBackgroundFadeOut = true;
+            BackgroundCurrentTime = 0.0f;
             dialogSystem.Initialize();
             choiceSystem.Initialize();
             ivSystem.Initialize();
@@ -99,6 +119,12 @@ namespace YS
             arSystem.Initialize();
 
             var initData = GameObject.FindObjectOfType<InGameInitData>();
+            if (initData.data.bgData.name != null && initData.data.bgData.name != "")
+                bc.SetBackground(initData.data.bgData);
+            IsBackgroundFadeOut = initData.data.isFadeOut;
+            BackgroundCurrentTime = 1.0f;
+            foreach (var invenItem in initData.data.invenItems)
+                invenComp.AddItem(invenItem);
             foreach (var data in initData.data.variableDatas)
                 varTable.Add(data.name, data.value.Instantiate());
             scriptData.SetScript(initData.data.scriptIndex);
@@ -106,7 +132,7 @@ namespace YS
         }
         void Update()
         {
-            if (um.CurrentState != InGameUIManager.INGAME_UI_STATE.GAME && IsKeyDown())
+            if (um.CurrentState == InGameUIManager.INGAME_UI_STATE.GAME)
                 OnUpdateEvent?.Invoke();
         }
         private void OnDestroy()
@@ -129,26 +155,6 @@ namespace YS
 
             return result;
         }
-        public Item GetItem(int index)
-        {
-            return bgUI.transform.GetChild(index).GetComponent<Item>();
-        }
-        /// <summary>
-        /// 배경 페이드효과 진행도 설정
-        /// </summary>
-        /// <param name="curTime">페이드 효과 진행도 변경 (0 ~ 1)</param>
-        public void SetBGCurTime(float curTime)
-        {
-            bgMtrl.SetFloat("_CurTime", curTime);
-        }
-        /// <summary>
-        /// 배경 페이드 설정
-        /// </summary>
-        /// <param name="fadeCondition">true면 FadeIn, false면 FadeOut</param>
-        public void SetBGFadeInOut(bool fadeCondition)
-        {
-            bgMtrl.SetFloat("_IsIn", fadeCondition ? 1.0f : 0.0f);
-        }
         /// <summary>
         /// 로그 남기기
         /// </summary>
@@ -156,23 +162,6 @@ namespace YS
         {
             log.Append(str);
             logTMP.SetText(log);
-        }
-        public void ChangeBackground(GameObject newBG)
-        {
-            Transform canvasTr = bgUI.transform.parent;
-            RectTransform newBGTr = newBG.GetComponent<RectTransform>();
-
-            newBGTr.SetParent(canvasTr, true);
-            newBGTr.SetAsFirstSibling();
-            newBGTr.anchoredPosition = Vector2.zero;
-            newBGTr.anchorMin = Vector2.zero;
-            newBGTr.anchorMax = Vector2.one;
-            newBGTr.sizeDelta = Vector2.zero;
-            newBGTr.localScale = Vector3.one;
-
-            Destroy(bgUI);
-
-            bgUI = newBG;
         }
 
         #region FX
@@ -184,10 +173,10 @@ namespace YS
         {
             switch (screenFX)
             {
-                case SCREEN_EFFECT.FADE_IN:
+                case SCREEN_EFFECT.FADE_OUT:
                     bgFXCoroutine = StartCoroutine(FadeEffect(true, 1.0f));
                     break;
-                case SCREEN_EFFECT.FADE_OUT:
+                case SCREEN_EFFECT.FADE_IN:
                     bgFXCoroutine = StartCoroutine(FadeEffect(false, 1.0f));
                     break;
                 case SCREEN_EFFECT.RED_FLASH:
@@ -253,16 +242,16 @@ namespace YS
                 yield return wf;
             }
         }
-        public IEnumerator FadeEffect(bool isIn, float time)
+        public IEnumerator FadeEffect(bool isOut, float time)
         {
             WaitForSeconds wf = CachedWaitForSeconds.Get(0.01f);
             float curTime = 0.0f;
 
-            bgMtrl.SetFloat("_IsIn", isIn ? 1.0f : 0.0f);
+            IsBackgroundFadeOut = isOut;
             
             while (curTime < time)
             {
-                bgMtrl.SetFloat("_CurTime", curTime / time);
+                BackgroundCurrentTime = curTime / time;
                 yield return wf;
                 curTime += 0.01f;
             }

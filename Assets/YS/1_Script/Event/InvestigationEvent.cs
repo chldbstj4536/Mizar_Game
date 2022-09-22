@@ -66,12 +66,14 @@ namespace YS
         /// </summary>
         private int findCount;
         private GameManager gm;
+        private BackgroundComponent bc;
         #endregion
 
         #region Methods
         public void Initialize()
         {
             gm = GameManager.Instance;
+            bc = BackgroundComponent.Instance;
             investigationCharacter.GetComponent<Button>().onClick.AddListener(() => { GameManager.Instance.ivSystem.OnClearBtnDown(); });
             investigationDialog = investigationDialogTMP.transform.parent.gameObject;
         }
@@ -87,14 +89,11 @@ namespace YS
 
             investigationPanel.SetActive(true);
 
-            var items = new Item[gm.ItemCount];
-            for (int i = 0; i < items.Length; ++i)
-            {
-                items[i] = gm.GetItem(i);
-                items[i].imageComp.raycastTarget = true;
-            }
+            foreach (var item in BackgroundComponent.Instance.Items)
+                item.imageComp.raycastTarget = true;
 
-            findCount = items.Length;
+            findCount = BackgroundComponent.Instance.RemainItemCount;
+
             if (findCount == 0)
                 findAllItemFXAnimator.SetBool("IsFindAllItem", true);
         }

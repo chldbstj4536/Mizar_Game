@@ -17,6 +17,8 @@ namespace YS
 
         private List<ITEM_INDEX> inven = new List<ITEM_INDEX>();
 
+        public List<ITEM_INDEX> Items => inven;
+
         public void OpenInventory()
         {
             gameObject.SetActive(true);

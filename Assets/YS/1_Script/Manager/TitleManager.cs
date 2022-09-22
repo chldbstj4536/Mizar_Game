@@ -82,33 +82,17 @@ namespace YS
         protected override void Awake()
         {
             Setting.LoadSetting();
-            SaveLoadData saveData;
-            saveData = SaveLoad.LoadData(0);
-            if (saveData.saveTime != null && saveData.saveTime != "")
-                quickSlotLoadBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = saveData.saveTime;
-
-            saveData = SaveLoad.LoadData(1);
-            if (saveData.saveTime != null && saveData.saveTime != "")
-            {
-                slot1StartBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = saveData.saveTime;
-                slot1LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = saveData.saveTime;
-            }
-            saveData = SaveLoad.LoadData(2);
-            if (saveData.saveTime != null && saveData.saveTime != "")
-            {
-                slot2StartBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = saveData.saveTime;
-                slot2LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = saveData.saveTime;
-            }
-            saveData = SaveLoad.LoadData(3);
-            if (saveData.saveTime != null && saveData.saveTime != "")
-            {
-                slot3StartBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = saveData.saveTime;
-                slot3LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = saveData.saveTime;
-            }
+            SaveLoad.WriteSaveData(0, quickSlotLoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            SaveLoad.WriteSaveData(1, slot1StartBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            SaveLoad.WriteSaveData(1, slot1LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            SaveLoad.WriteSaveData(2, slot2StartBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            SaveLoad.WriteSaveData(2, slot2LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            SaveLoad.WriteSaveData(3, slot3StartBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            SaveLoad.WriteSaveData(3, slot3LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
         }
         private void Start()
         {
-            stateStack.OnAfterPushEvent += PushEvent;
+            stateStack.OnPushEvent += PushEvent;
             stateStack.OnPopEvent += PopEvent;
 
             stateStack.PushState((int)TITLE_UI_STATE.TOUCH_TO_START);

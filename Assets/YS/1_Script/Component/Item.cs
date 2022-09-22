@@ -11,6 +11,7 @@ namespace YS
         #region Fields
         public ITEM_INDEX index;
         public Image imageComp;
+
         private ItemData itemData;
         #endregion
 

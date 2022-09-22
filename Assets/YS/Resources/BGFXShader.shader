@@ -5,7 +5,7 @@ Shader "Hidden/NewImageEffectShader"
         _MainTex ("Texture", 2D) = "white" {}
         _AddColor("AddColor", Color) = (0,0,0,0)
         _CurTime("Time", Range(0.0, 1.0)) = 0
-        [MaterialToggle]_IsIn("Is FadeIn", float) = 0
+        [MaterialToggle]_IsOut("Is FadeOut", float) = 0
     }
     SubShader
     {
@@ -43,13 +43,13 @@ Shader "Hidden/NewImageEffectShader"
             sampler2D _MainTex;
             fixed4 _AddColor;
             float _CurTime;
-            float _IsIn;
+            float _IsOut;
 
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
                 clip(col.a - 0.0001f);
-                col.rgb = col.rgb * abs(_IsIn - _CurTime);
+                col.rgb = col.rgb * abs(_IsOut - _CurTime);
                 return col + _AddColor;
             }
             ENDCG

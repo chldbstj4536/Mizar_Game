@@ -234,7 +234,7 @@ namespace YS
             for (int i = 0; i < 3; ++i)
                 sideImg[i].transform.position = SidePosition[i];
 
-            gm.SetBGCurTime(1.0f);
+            gm.BackgroundCurrentTime = 1.0f;
             gm.ResetFlash();
         }
         private IEnumerator AutoPaging(float time)
@@ -274,8 +274,8 @@ namespace YS
     public enum SCREEN_EFFECT
     {
         NONE,
-        FADE_IN,
         FADE_OUT,
+        FADE_IN,
         RED_FLASH,
     }
     public enum CHARACTER_EFFECT_INDEX

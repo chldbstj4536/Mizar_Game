@@ -79,36 +79,6 @@ namespace YS
             FXAudioVolume = setting.fxVol;
             TypingSpeed = setting.typingSpeed;
         }
-        public static void LoadSetting()
-        {
-            try
-            {
-                if (!Directory.Exists(Path.AppDataFolder))
-                    Directory.CreateDirectory(Path.AppDataFolder);
-                if (!File.Exists(Path.ConfigData))
-                    File.Create(Path.ConfigData).Close();
-
-                StreamReader sr = new StreamReader(Path.ConfigData);
-                string line = sr.ReadLine();
-                Debug.Log(line);
-                var aes = new AES256CBC(AesKey, AesIV);
-                line = aes.Decrypt(line);
-                Debug.Log(line);
-
-                if (line == null)
-                {
-                    SaveSetting();
-                    return;
-                }
-
-                SetSetting(JsonUtility.FromJson<ConfigData>(line));
-                sr.Close();
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e.Message);
-            }
-        }
         public static void SaveSetting()
         {
             try
@@ -123,6 +93,30 @@ namespace YS
                 StreamWriter sw = new StreamWriter(Path.ConfigData, false);
                 sw.WriteLine(aes.Encrypt(JsonUtility.ToJson(CurrentConfigData)));
                 sw.Close();
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e.Message);
+            }
+        }
+        public static void LoadSetting()
+        {
+            try
+            {
+                if (!Directory.Exists(Path.AppDataFolder))
+                    Directory.CreateDirectory(Path.AppDataFolder);
+                if (!File.Exists(Path.ConfigData))
+                    SaveSetting();
+
+                StreamReader sr = new StreamReader(Path.ConfigData);
+                string line = sr.ReadLine();
+                Debug.Log(line);
+                var aes = new AES256CBC(AesKey, AesIV);
+                line = aes.Decrypt(line);
+                Debug.Log(line);
+
+                SetSetting(JsonUtility.FromJson<ConfigData>(line));
+                sr.Close();
             }
             catch (Exception e)
             {

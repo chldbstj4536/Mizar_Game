@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Sirenix.OdinInspector;
 using TMPro;
+using System;
 
 namespace YS
 {
@@ -92,6 +93,7 @@ namespace YS
 
         // UI 상태 변수
         private StateStack stateStack = new StateStack();
+        private bool isInMenu = false;
         private Coroutine coroutineTextPreview;
         #endregion
 
@@ -108,60 +110,58 @@ namespace YS
             base.Awake();
 
             Setting.LoadSetting();
-            SaveLoadData saveData;
-            saveData = SaveLoad.LoadData(0);
-            if (saveData.saveTime != null && saveData.saveTime != "")
-                quickSlotLoadBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = saveData.saveTime;
-
-            saveData = SaveLoad.LoadData(1);
-            if (saveData.saveTime != null && saveData.saveTime != "")
-            {
-                slot1SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = saveData.saveTime;
-                slot1LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = saveData.saveTime;
-            }
-            saveData = SaveLoad.LoadData(2);
-            if (saveData.saveTime != null && saveData.saveTime != "")
-            {
-                slot2SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = saveData.saveTime;
-                slot2LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = saveData.saveTime;
-            }
-            saveData = SaveLoad.LoadData(3);
-            if (saveData.saveTime != null && saveData.saveTime != "")
-            {
-                slot3SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = saveData.saveTime;
-                slot3LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = saveData.saveTime;
-            }
+            SaveLoad.WriteSaveData(0, quickSlotLoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            SaveLoad.WriteSaveData(1, slot1SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            SaveLoad.WriteSaveData(1, slot1LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            SaveLoad.WriteSaveData(2, slot2SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            SaveLoad.WriteSaveData(2, slot2LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            SaveLoad.WriteSaveData(3, slot3SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            SaveLoad.WriteSaveData(3, slot3LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
         }
         private void Start()
         {
-            stateStack.OnBeforePushEvent += BeforePushEvent;
-            stateStack.OnAfterPushEvent += AfterPushEvent;
+            stateStack.OnPushEvent += PushEvent;
             stateStack.OnPopEvent += PopEvent;
 
             stateStack.PushState((int)INGAME_UI_STATE.GAME);
 
             // 버튼들에 이벤트 등록
-            menuBtn.onClick.AddListener(() => { stateStack.PushState((int)INGAME_UI_STATE.MENU); });
+            menuBtn.onClick.AddListener(() => { OnPush(INGAME_UI_STATE.MENU); });
 
-            invenBtn.onClick.AddListener(() => { stateStack.PushState((int)INGAME_UI_STATE.INVEN); });
+            invenBtn.onClick.AddListener(() => { OnPush(INGAME_UI_STATE.INVEN); });
             invenExitBtn.onClick.AddListener(() => { stateStack.PopState(); });
 
-            saveBtn.onClick.AddListener(() => { stateStack.PushState((int)INGAME_UI_STATE.SAVE); });
-            slot1SaveBtn.onClick.AddListener(() => { SaveLoad.OnOverwriteGame(1, GameManager.Instance.CurrentData); });
-            slot2SaveBtn.onClick.AddListener(() => { SaveLoad.OnOverwriteGame(2, GameManager.Instance.CurrentData); });
-            slot3SaveBtn.onClick.AddListener(() => { SaveLoad.OnOverwriteGame(3, GameManager.Instance.CurrentData); });
+            saveBtn.onClick.AddListener(() => { OnPush(INGAME_UI_STATE.SAVE); });
+            slot1SaveBtn.onClick.AddListener(() =>
+            {
+                SaveLoad.OnOverwriteGame(1, GameManager.Instance.CurrentData);
+                slot1SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = DateTime.Now.ToString();
+                slot1LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = DateTime.Now.ToString();
+            });
+            slot2SaveBtn.onClick.AddListener(() =>
+            {
+                SaveLoad.OnOverwriteGame(2, GameManager.Instance.CurrentData);
+                slot2SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = DateTime.Now.ToString();
+                slot2LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = DateTime.Now.ToString();
+            });
+            slot3SaveBtn.onClick.AddListener(() =>
+            {
+                SaveLoad.OnOverwriteGame(3, GameManager.Instance.CurrentData);
+                slot3SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = DateTime.Now.ToString();
+                slot3LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = DateTime.Now.ToString();
+            });
 
-            loadBtn.onClick.AddListener(() => { stateStack.PushState((int)INGAME_UI_STATE.LOAD); });
+            loadBtn.onClick.AddListener(() => { OnPush(INGAME_UI_STATE.LOAD); });
             quickSlotLoadBtn.onClick.AddListener(() => { SaveLoad.OnStartGame(0); });
             slot1LoadBtn.onClick.AddListener(() => { SaveLoad.OnStartGame(1); });
             slot2LoadBtn.onClick.AddListener(() => { SaveLoad.OnStartGame(2); });
             slot3LoadBtn.onClick.AddListener(() => { SaveLoad.OnStartGame(3); });
 
-            settingBtn.onClick.AddListener(() => { stateStack.PushState((int)INGAME_UI_STATE.SETTING); });
+            settingBtn.onClick.AddListener(() => { OnPush(INGAME_UI_STATE.SETTING); });
             settingComp.OnHideWindowEvent += () => { stateStack.PopState(); };
 
-            logBtn.onClick.AddListener(() => { stateStack.PushState((int)INGAME_UI_STATE.LOG); });
-            exitBtn.onClick.AddListener(() => { stateStack.PushState((int)INGAME_UI_STATE.EXIT); });
+            logBtn.onClick.AddListener(() => { OnPush(INGAME_UI_STATE.LOG); });
+            exitBtn.onClick.AddListener(() => { OnPush(INGAME_UI_STATE.EXIT); });
         }
 
         private void Update()
@@ -178,25 +178,17 @@ namespace YS
         /// UI 상태 추가 전 이벤트
         /// </summary>
         /// <param name="pushState">추가될 상태</param>
-        private void BeforePushEvent(int pushState)
+        private void OnPush(INGAME_UI_STATE pushState)
         {
-            if (CurrentState == INGAME_UI_STATE.MENU)
+            if (CurrentState == INGAME_UI_STATE.SETTING && pushState == INGAME_UI_STATE.SETTING)
                 return;
 
-            switch ((INGAME_UI_STATE)pushState)
-            {
-                case INGAME_UI_STATE.MENU:
-                    stateStack.PopState((uint)INGAME_UI_STATE.GAME, false);
-                    break;
-                case INGAME_UI_STATE.SAVE:
-                case INGAME_UI_STATE.LOAD:
-                case INGAME_UI_STATE.SETTING:
-                case INGAME_UI_STATE.LOG:
-                    stateStack.PopState((uint)INGAME_UI_STATE.MENU, false);
-                    break;
-            }
+            if (stateStack.Contains((int)pushState))
+                stateStack.PopState((uint)pushState);
+            else
+                stateStack.PushState((uint)pushState);
         }
-        public void AfterPushEvent(int pushState)
+        private void PushEvent(int pushState)
         {
             switch ((INGAME_UI_STATE)pushState)
             {
@@ -243,11 +235,10 @@ namespace YS
                     menuPanel.SetSlide(new Vector2(-500.0f, 0.0f), true);
                     break;
                 case INGAME_UI_STATE.SAVE:
-                case INGAME_UI_STATE.LOAD:
                     savePanel.SetSlide(new Vector2(-500.0f, -340.0f), true);
                     break;
-                case INGAME_UI_STATE.SETTING:
-                    settingComp.HideWindow();
+                case INGAME_UI_STATE.LOAD:
+                    loadPanel.SetSlide(new Vector2(-500.0f, -340.0f), true);
                     break;
                 case INGAME_UI_STATE.LOG:
                     logPanel.SetActive(false);

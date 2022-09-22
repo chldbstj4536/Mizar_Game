@@ -18,7 +18,7 @@ namespace YS
             set
             {
                 typingSpeed = value;
-                OnChangedTypingSpeedEvent.Invoke();
+                OnChangedTypingSpeedEvent?.Invoke();
             }
         }
 

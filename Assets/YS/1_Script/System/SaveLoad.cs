@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -76,7 +78,7 @@ namespace YS
                 if (!Directory.Exists(Path.AppDataFolder))
                     Directory.CreateDirectory(Path.AppDataFolder);
                 if (!File.Exists(path))
-                    return new SaveLoadData() { saveTime = null, scriptIndex = 0, variableDatas = ResourceManager.GetResource<ScriptData>("ScriptData").VariableDatas };
+                    return SaveLoadData.NewData;
 
                 StreamReader sr = new StreamReader(path);
                 var aes = new AES256CBC(AesKey, AesIV);
@@ -94,6 +96,15 @@ namespace YS
 
             return result;
         }
+        public static bool ExistSaveFile(int index)
+        {
+            return File.Exists(Path.SaveData + index.ToString());
+        }
+        public static void WriteSaveData(int index, TMP_Text tmp)
+        {
+            if (ExistSaveFile(index))
+                tmp.text = LoadData(index).saveTime;
+        }
     }
 
     [Serializable]
@@ -101,18 +112,27 @@ namespace YS
     {
         // 저장 시간
         public string saveTime;
-        // 진행중인 스크립트 번호
-        public int scriptIndex;
+        // 배경
+        public BackgroundData bgData;
+        // 배경 페이드 효고 여부
+        public bool isFadeOut;
+        // 보유 아이템
+        public List<ITEM_INDEX> invenItems;
         // 변수 상태
         public List<VariableData> variableDatas;
+        // 진행중인 스크립트 번호
+        public int scriptIndex;
 
-        public static SaveLoadData NewData => new SaveLoadData(0, ResourceManager.GetResource<ScriptData>("ScriptData").VariableDatas);
+        public static SaveLoadData NewData => new SaveLoadData(0, new BackgroundData(), false, new List<ITEM_INDEX>(), ResourceManager.GetResource<ScriptData>(ResourcePath.ScriptDataPath).VariableDatas);
 
-        public SaveLoadData(int scriptIndex, List<VariableData> varDatas)
+        public SaveLoadData(int scriptIndex, BackgroundData bgData, bool isFadeOut, List<ITEM_INDEX> invenItems, List<VariableData> variableDatas)
         {
             saveTime = DateTime.Now.ToString();
+            this.bgData = bgData;
+            this.isFadeOut = isFadeOut;
+            this.invenItems = invenItems;
+            this.variableDatas = variableDatas;
             this.scriptIndex = scriptIndex;
-            variableDatas = varDatas;
         }
     }
 }
