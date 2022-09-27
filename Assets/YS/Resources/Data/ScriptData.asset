@@ -11606,9 +11606,17 @@ MonoBehaviour:
         script: "\uB0B4\uC77C\uC740 \uB354 \uACE0\uC0DD\uC774\uACA0\uC5B4!"
     000001F0:
       type: {class: BoolVariable, ns: YS, asm: Assembly-CSharp}
+      data:
+        data: 0
     000001F1:
       type: {class: BoolVariable, ns: YS, asm: Assembly-CSharp}
+      data:
+        data: 0
     000001F2:
       type: {class: BoolVariable, ns: YS, asm: Assembly-CSharp}
+      data:
+        data: 0
     000001F3:
       type: {class: BoolVariable, ns: YS, asm: Assembly-CSharp}
+      data:
+        data: 1

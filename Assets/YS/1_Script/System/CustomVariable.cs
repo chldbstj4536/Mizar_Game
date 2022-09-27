@@ -5,6 +5,7 @@ using Sirenix.OdinInspector;
 
 namespace YS
 {
+    [System.Serializable]
     public abstract class CustomVariable
     {
         public abstract void Set(bool value, ARITHMETIC_CALC calcType);
@@ -15,9 +16,10 @@ namespace YS
         public abstract bool Compare(float value, COMPARE_TYPE compareType);
         public abstract CustomVariable Instantiate();
     }
+    [System.Serializable]
     public class BoolVariable : CustomVariable
     {
-        [HideLabel, ShowInInspector]
+        [HideLabel, SerializeField]
         private bool data;
         public BoolVariable(bool value) { data = value; }
         public override void Set(bool value, ARITHMETIC_CALC calcType)
@@ -56,9 +58,10 @@ namespace YS
         public override bool Compare(float value, COMPARE_TYPE compareType) { throw new System.InvalidCastException("유효하지 않은 타입"); }
         public override CustomVariable Instantiate() { return new BoolVariable(data); }
     }
+    [System.Serializable]
     public class IntVariable : CustomVariable
     {
-        [HideLabel, ShowInInspector]
+        [HideLabel, SerializeField]
         private int data;
         public IntVariable(int value) { data = value; }
         public override void Set(bool value, ARITHMETIC_CALC calcType) { throw new System.InvalidCastException("유효하지 않은 타입"); }
@@ -108,9 +111,10 @@ namespace YS
         public override bool Compare(float value, COMPARE_TYPE compareType) { throw new System.InvalidCastException("유효하지 않은 타입"); }
         public override CustomVariable Instantiate() { return new IntVariable(data); }
     }
+    [System.Serializable]
     public class FloatVariable : CustomVariable
     {
-        [HideLabel, ShowInInspector]
+        [HideLabel, SerializeField]
         private float data;
         public FloatVariable(float value) { data = value; }
         public override void Set(bool value, ARITHMETIC_CALC calcType) { throw new System.InvalidCastException("유효하지 않은 타입"); }

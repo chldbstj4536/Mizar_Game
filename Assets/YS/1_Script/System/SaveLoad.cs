@@ -61,7 +61,9 @@ namespace YS
                 AES256CBC aes = new AES256CBC(AesKey, AesIV);
 
                 StreamWriter sw = new StreamWriter(path, false);
-                sw.WriteLine(aes.Encrypt(JsonUtility.ToJson(saveData)));
+                string line = JsonUtility.ToJson(saveData);
+                Debug.Log(line);
+                sw.WriteLine(aes.Encrypt(line));
                 sw.Close();
             }
             catch (Exception e)
