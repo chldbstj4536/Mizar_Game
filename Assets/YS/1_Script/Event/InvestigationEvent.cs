@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -67,6 +66,7 @@ namespace YS
         private int findCount;
         private GameManager gm;
         private BackgroundComponent bc;
+        private Coroutine CoHideDialogTMP;
         #endregion
 
         #region Methods
@@ -145,13 +145,17 @@ namespace YS
             else
             {
                 investigationDialog.SetActive(true);
-                gm.CancelInvoke(nameof(HideInferenceDialogTMP));
                 investigationDialogTMP.SetText("아직 조사가 끝나지 않았어");
-                gm.Invoke(nameof(HideInferenceDialogTMP), 3.0f);
+
+                if (CoHideDialogTMP != null)
+                    gm.StopCoroutine(CoHideDialogTMP);
+                CoHideDialogTMP = gm.StartCoroutine(HideInferenceDialogTMP());
             }
         }
-        private void HideInferenceDialogTMP()
+        private IEnumerator HideInferenceDialogTMP()
         {
+            yield return CachedWaitForSeconds.Get(3.0f);
+
             investigationDialog.SetActive(false);
         }
         #endregion

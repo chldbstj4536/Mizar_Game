@@ -46,7 +46,7 @@ namespace YS
         public BackgroundItemData(Item item)
         {
             index = item.index;
-            pos = item.transform.position;
+            pos = item.transform.localPosition;
         }
     }
     public class ResourceManager

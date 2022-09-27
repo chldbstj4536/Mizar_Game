@@ -544,7 +544,7 @@ MonoBehaviour:
     00000002:
       type: {class: DialogEvent, ns: YS, asm: Assembly-CSharp}
       data:
-        screenEffect: 2
+        screenEffect: 1
         leftCharacter:
           image: {fileID: 0}
           isMirror: 0
