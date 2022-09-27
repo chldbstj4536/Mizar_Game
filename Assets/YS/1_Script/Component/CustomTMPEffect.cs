@@ -12,9 +12,10 @@ namespace YS
         public static event OnChangedValue OnChangedTypingSpeedEvent;
 
         private static float typingSpeed = 0.05f;
+        private static float fixedTypingSpeed = -1.0f;
         public static float TypingSpeed
         {
-            get { return typingSpeed; }
+            get { return fixedTypingSpeed < 0.0f ? typingSpeed : fixedTypingSpeed; }
             set
             {
                 typingSpeed = value;
@@ -54,7 +55,6 @@ namespace YS
         {
             textComponent = gameObject.GetComponent<TMP_Text>();
             textInfo = textComponent.textInfo;
-            OnChangedTypingSpeedEvent += OnChangedTypingSpeed;
         }
         private void OnEnable()
         {
@@ -145,7 +145,9 @@ namespace YS
                         Color32[] newColors = textInfo.meshInfo[materialIndex].colors32;
                         Vector3[] newVertices = textInfo.meshInfo[materialIndex].vertices;
 
-                        switch (linkIDs[j])
+                        string[] p = linkIDs[j].Split('=');
+
+                        switch (p[0])
                         {
                             case "v_shake":
                                 isPerVertex = true;
@@ -165,6 +167,12 @@ namespace YS
                                 break;
                             case "rainbow":
                                 RainbowText(newColors, charVertexIndex);
+                                break;
+                            case "ts":
+                                if (link.linkTextfirstCharacterIndex < cursor && cursor <= link.linkTextfirstCharacterIndex + link.linkTextLength)
+                                    fixedTypingSpeed = float.Parse(p[1]);
+                                else
+                                    fixedTypingSpeed = -1.0f;
                                 break;
                         }
                     }
@@ -249,10 +257,6 @@ namespace YS
 
             textComponent.ForceMeshUpdate();
             StartCoroutine(TypingStart());
-        }
-        private void OnChangedTypingSpeed()
-        {
-
         }
         #endregion
     }
