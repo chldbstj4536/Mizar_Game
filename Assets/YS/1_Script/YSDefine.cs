@@ -13,11 +13,16 @@ namespace YS
     }
     public class ResourcePath
     {
+        // Path
         public static string ItemDataPath => "Data/ItemData";
         public static string BackgroundDataPath => "Data/BackgroundData";
         public static string ScriptDataPath => "Data/ScriptData";
-
+        // Prefab
         public static string BGItemPrefabPath => "Prefab/BGItemPrefab";
+        // Image
+        public static string TouchToStartBG => "Image/TouchToStartBG";
+        // Video
+        public static string TouchToStartVideoPath => "dummy/opening01video";
     }
     [System.Serializable, DisableContextMenu]
     public struct VariableData

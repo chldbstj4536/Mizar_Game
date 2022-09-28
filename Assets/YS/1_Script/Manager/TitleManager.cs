@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Sirenix.OdinInspector;
 using TMPro;
+using UnityEngine.Video;
 
 namespace YS
 {
@@ -32,6 +33,9 @@ namespace YS
         [BoxGroup("패널")]
         [LabelText("사진첩 패널")]
         public GameObject galleryPanel;
+        [BoxGroup("패널")]
+        [LabelText("배경")]
+        public SpriteRenderer bg;
 
         [BoxGroup("메인 메뉴", true, true)]
         [LabelText("설정 버튼")]
@@ -72,6 +76,7 @@ namespace YS
         [LabelText("슬롯3 버튼")]
         public Button slot3LoadBtn;
 
+        private VideoPlayer vp;
         private Coroutine coroutineTextPreview;
         private StateStack stateStack = new StateStack();
         [ShowInInspector]
@@ -89,6 +94,8 @@ namespace YS
             SaveLoad.WriteSaveData(2, slot2LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
             SaveLoad.WriteSaveData(3, slot3StartBtn.transform.GetChild(0).GetComponent<TMP_Text>());
             SaveLoad.WriteSaveData(3, slot3LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+
+            vp = Camera.allCameras[0].GetComponent<VideoPlayer>();
         }
         private void Start()
         {
@@ -128,8 +135,23 @@ namespace YS
         {
             switch ((TITLE_UI_STATE)stateIndex)
             {
+                case TITLE_UI_STATE.TOUCH_TO_START:
+                    bg.sprite = ResourceManager.GetResource<Sprite>(ResourcePath.TouchToStartBG);
+                    vp.Prepare();
+                    break;
                 case TITLE_UI_STATE.MENU:
-                    menuPanel.SetActive(true);
+                    if (!vp.isPrepared)
+                        vp.prepareCompleted += (VideoPlayer vp) => { vp.Play(); };
+                    else
+                    {
+                        clickToStartPanel.SetActive(false);
+                        vp.Play();
+                    }
+
+                    vp.loopPointReached += (VideoPlayer vp) =>
+                    {
+                        menuPanel.SetActive(true);
+                    };
                     break;
                 case TITLE_UI_STATE.SETTING:
                     settingComp.ShowWindow();
@@ -153,7 +175,6 @@ namespace YS
             switch ((TITLE_UI_STATE)stateIndex)
             {
                 case TITLE_UI_STATE.TOUCH_TO_START:
-                    clickToStartPanel.SetActive(false);
                     break;
                 case TITLE_UI_STATE.MENU:
                     Application.Quit();

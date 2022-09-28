@@ -46,7 +46,7 @@ namespace YS
             initData.data = LoadData(saveIndex);
             GameObject.DontDestroyOnLoad(initDataObj);
 
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(0);
         }
         private static void SaveData(int index, SaveLoadData saveData)
         {
