@@ -24,13 +24,9 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: PlayBGM, ns: YS, asm: Assembly-CSharp}
+      type: {class: PuzzleEvent, ns: YS, asm: Assembly-CSharp}
       data:
-        audioBGM: {fileID: 8300000, guid: ddbb5c598218ed24fb0e8d1b0d1323b2, type: 3}
-        volume: 1
-        isLoop: 0
-        playTime: 3
-        dampingTime: 15
+        puzzleName: Test
     00000001:
       type: {class: InferenceEvent, ns: YS, asm: Assembly-CSharp}
       data:

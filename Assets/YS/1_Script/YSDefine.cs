@@ -16,9 +16,11 @@ namespace YS
         // Path
         public static string ItemDataPath => "Data/ItemData";
         public static string BackgroundDataPath => "Data/BackgroundData";
+        public static string PuzzleDataPath => "Data/PuzzleData";
         public static string ScriptDataPath => "Data/ScriptData";
         // Prefab
         public static string BGItemPrefabPath => "Prefab/BGItemPrefab";
+        public static string PuzzlePiecePrefabPath => "Prefab/PuzzlePiecePrefab";
         // Image
         public static string TouchToStartBG => "Image/TouchToStartBG";
         // Video
