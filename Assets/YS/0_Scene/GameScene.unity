@@ -2420,6 +2420,7 @@ MonoBehaviour:
     getItemUI_ItemImg: {fileID: 759564549}
     getItemUI_ItemName: {fileID: 1152951232}
     getItemUI_ItemDesc: {fileID: 356485865}
+    cursorImg: {fileID: 2800000, guid: 4235947fc61b99c49b320e927407258f, type: 3}
   ifSystem:
     rootObj: {fileID: 763724227}
     character: {fileID: 1925883194}
@@ -4377,7 +4378,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &669368705
 RectTransform:
   m_ObjectHideFlags: 0

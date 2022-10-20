@@ -58,7 +58,7 @@ Material:
     m_Floats:
     - _A: 0
     - _BumpScale: 1
-    - _CurTime: 0.99999934
+    - _CurTime: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0

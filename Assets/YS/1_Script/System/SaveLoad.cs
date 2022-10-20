@@ -45,6 +45,10 @@ namespace YS
             var initData = initDataObj.AddComponent<InGameInitData>();
             initData.data = LoadData(saveIndex);
             GameObject.DontDestroyOnLoad(initDataObj);
+            GameObject loadDataObj = new GameObject("LoadData");
+            var loadData = loadDataObj.AddComponent<LoadingData>();
+            loadData.loadingScene = LOADING_SCENE.GAME;
+            GameObject.DontDestroyOnLoad(loadDataObj);
 
             SceneManager.LoadScene(0);
         }

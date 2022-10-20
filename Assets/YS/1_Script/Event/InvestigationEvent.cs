@@ -57,6 +57,9 @@ namespace YS
         [FoldoutGroup("조사 UI/아이템 획득 창 UI")]
         [LabelText("획득 아이템 설명 UI"), Tooltip("아이템 획득 창에서의 설명 TMP")]
         public TMP_Text getItemUI_ItemDesc;
+        [FoldoutGroup("조사 UI")]
+        [LabelText("조사 마우스 커서 이미지"), Tooltip("조사 중 사용할 마우스 커서 이미지")]
+        public Texture2D cursorImg;
 
         private GameObject investigationDialog;
         private Button clearBtn;
@@ -96,6 +99,8 @@ namespace YS
 
             if (findCount == 0)
                 findAllItemFXAnimator.SetBool("IsFindAllItem", true);
+
+            Cursor.SetCursor(cursorImg, Vector2.zero, CursorMode.Auto);
         }
         /// <summary>
         /// 조사 모드 해제 함수
@@ -103,6 +108,8 @@ namespace YS
         public void Release()
         {
             investigationPanel.SetActive(false);
+
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         }
         public void OnUpdate()
         {

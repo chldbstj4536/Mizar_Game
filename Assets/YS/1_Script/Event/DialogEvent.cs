@@ -3,7 +3,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Sirenix.OdinInspector;
+
+#if UNITY_EDITOR
 using Sirenix.Utilities.Editor;
+#endif
 
 namespace YS
 {
@@ -37,7 +40,7 @@ namespace YS
         [LabelText("스크립트 내용"), Tooltip("대화 상자의 내용\n이름과 내용 모두 빈칸일 시 대화 상자 숨김")]
         private string script;
 
-        #region Properties
+#region Properties
         public SCREEN_EFFECT ScreenEffect => screenEffect;
         public CharacterStruct LeftCharacter => leftCharacter;
         public CharacterStruct CenterCharacter => centerCharacter;
@@ -46,7 +49,7 @@ namespace YS
         public float AutoTime => autoTime;
         public string Name => name;
         public string Script => script;
-        #endregion
+#endregion
 
         public override void OnEnter()
         {
@@ -85,7 +88,7 @@ namespace YS
     [System.Serializable]
     public class DialogSystem
     {
-        #region Fields
+#region Fields
         [FoldoutGroup("다이얼로그 UI", false)]
         [LabelText("다이얼로그 패널 UI"), Tooltip("다이얼로그 루트 게임오브젝트")]
         public GameObject dialogUI;
@@ -119,13 +122,13 @@ namespace YS
         // sideFX 코루틴 정보 (스킵 시 사용)
         private Coroutine[] sideFXCoroutine;
         private GameManager gm;
-        #endregion
+#endregion
 
-        #region Properties
+#region Properties
         public Vector3[] SidePosition => sidePos;
-        #endregion
+#endregion
 
-        #region Methods
+#region Methods
         public void Initialize()
         {
             gm = GameManager.Instance;
@@ -244,7 +247,6 @@ namespace YS
             gm.scriptData.SetScript(gm.scriptData.CurrentIndex + 1);
         }
 
-#if UNITY_EDITOR
         private void BeginDrawListElement(int index)
         {
             string title = "";
@@ -260,9 +262,10 @@ namespace YS
                     title = "오른쪽";
                     break;
             }
+#if UNITY_EDITOR
             SirenixEditorGUI.Title(title, null, TextAlignment.Center, false);
-        }
 #endif
+        }
 #endregion
     }
     public enum SIDE_IMAGE
