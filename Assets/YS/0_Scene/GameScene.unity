@@ -2441,8 +2441,14 @@ MonoBehaviour:
     mizarImg: {fileID: 1314480167}
     descTMP: {fileID: 968428660}
     submitBtn: {fileID: 1395879477}
+  puzzleSystem:
+    rootObj: {fileID: 669368704}
+    frameImg: {fileID: 1020028593}
+    rootPieceTr: {fileID: 1559839645}
+    correctOffset: 10
+    randomRange: 300
   logTMP: {fileID: 236268519}
-  scriptData: {fileID: 11400000, guid: fe8d1b12d7c37c642be69e9ea0ae4e2a, type: 2}
+  scriptData: {fileID: 11400000, guid: c680a24da5cf1b54d87604169ce3d27d, type: 2}
   itemData: {fileID: 11400000, guid: 8309f41304dfa534390612ee98d40755, type: 2}
   invenComp: {fileID: 1343145470}
 --- !u!4 &471057962
@@ -4390,8 +4396,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1020028592}
   - {fileID: 1559839645}
+  - {fileID: 1020028592}
   m_Father: {fileID: 23006990}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6812,7 +6818,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 669368705}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -9503,13 +9509,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 669368705}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -40, y: 0}
+  m_AnchoredPosition: {x: -440, y: 0}
   m_SizeDelta: {x: 800, y: 1000}
-  m_Pivot: {x: 1, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1559839646
 MonoBehaviour:
   m_ObjectHideFlags: 0

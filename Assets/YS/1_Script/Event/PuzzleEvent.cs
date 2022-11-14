@@ -14,10 +14,13 @@ namespace YS
         public override void OnEnter()
         {
             base.OnEnter();
+
+            gm.puzzleSystem.Setup(this);
         }
         protected override void OnUpdate() { }
     }
-    public class PuzzleSyste
+    [System.Serializable]
+    public class PuzzleSystem
     {
         #region Fields
         [FoldoutGroup("퍼즐 UI", false)]
@@ -29,7 +32,13 @@ namespace YS
         [FoldoutGroup("퍼즐 UI")]
         [LabelText("퍼즐 조각들이 배치될 오브젝트")]
         public Transform rootPieceTr;
-
+        [FoldoutGroup("퍼즐 UI")]
+        [LabelText("퍼즐 정답 오차 범위")]
+        public float correctOffset = 10.0f;
+        [FoldoutGroup("퍼즐 UI")]
+        [LabelText("퍼즐 생성 랜덤 범위")]
+        public float randomRange = 100.0f;
+        
         private GameManager gm;
         private int successCount;
         #endregion
@@ -38,11 +47,12 @@ namespace YS
         public void Initialize()
         {
             gm = GameManager.Instance;
-            successCount = 0;
         }
         public void Setup(PuzzleEvent pe)
         {
             rootObj.SetActive(true);
+
+            successCount = 0;
 
             PuzzleData data = PuzzleDataSO.Instance[pe.puzzleName];
 
@@ -50,6 +60,7 @@ namespace YS
             for (int i = 0; i < data.pieces.Count; ++i)
             {
                 var ppc = GameObject.Instantiate(ResourceManager.GetResource<GameObject>(ResourcePath.PuzzlePiecePrefabPath), frameImg.transform).GetComponent<PuzzlePieceComponent>();
+                ppc.transform.position = rootPieceTr.position + new Vector3(Random.Range(-randomRange, randomRange), Random.Range(-randomRange, randomRange), 0.0f);
                 ppc.InitializePiece(data.pieces[i].pieceImg, data.pieces[i].correctPos, frameImg.rectTransform.sizeDelta);
                 ppc.OnSuccess += () =>
                 {
@@ -60,7 +71,7 @@ namespace YS
         }
         private void Clear()
         {
-
+            gm.scriptData.SetScript(gm.scriptData.CurrentIndex + 1);
         }
         #endregion
     }

@@ -37,6 +37,12 @@ namespace YS
         [HideLabel]
         public ArrangeSystem arSystem;
 
+        /// <summary>
+        /// 정리 시스템
+        /// </summary>
+        [HideLabel]
+        public PuzzleSystem puzzleSystem;
+
         [LabelText("로그 TMP")]
         public TMP_Text logTMP;
 
@@ -117,23 +123,57 @@ namespace YS
             ivSystem.Initialize();
             ifSystem.Initialize();
             arSystem.Initialize();
-
+            puzzleSystem.Initialize();
+            
             var initData = GameObject.FindObjectOfType<InGameInitData>();
-            if (initData.data.bgData.name != null && initData.data.bgData.name != "")
-                bc.SetBackground(initData.data.bgData);
-            IsBackgroundFadeOut = initData.data.isFadeOut;
-            BackgroundCurrentTime = 1.0f;
-            foreach (var invenItem in initData.data.invenItems)
-                invenComp.AddItem(invenItem);
-            foreach (var data in initData.data.variableDatas)
-                varTable.Add(data.name, data.value.Instantiate());
-            scriptData.SetScript(initData.data.scriptIndex);
-            Destroy(initData.gameObject);
+            if (initData != null)
+            {
+                if (initData.data.bgData.name != null && initData.data.bgData.name != "")
+                    bc.SetBackground(initData.data.bgData);
+                IsBackgroundFadeOut = initData.data.isFadeOut;
+                BackgroundCurrentTime = 1.0f;
+                foreach (var invenItem in initData.data.invenItems)
+                    invenComp.AddItem(invenItem);
+                foreach (var data in initData.data.variableDatas)
+                    varTable.Add(data.name, data.value.Instantiate());
+                scriptData.SetScript(initData.data.scriptIndex);
+                Destroy(initData.gameObject);
+            }
+            else
+                scriptData.SetScript(0);
+                  
         }
         void Update()
         {
             if (um.CurrentState == InGameUIManager.INGAME_UI_STATE.GAME)
                 OnUpdateEvent?.Invoke();
+
+
+            // Save 단축키
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                
+            }
+            // Item 단축키
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+
+            }
+            // Log 단축키
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+
+            }
+            // Settings 단축키
+            else if (Input.GetKeyDown(KeyCode.R))
+            {
+
+            }
+            // Menu 단축키
+            else if (Input.GetKeyDown(KeyCode.Tab))
+            {
+
+            }
         }
         private void OnDestroy()
         {

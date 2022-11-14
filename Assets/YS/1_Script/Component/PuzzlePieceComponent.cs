@@ -29,20 +29,15 @@ namespace YS
         }
         public void OnBeginDrag(PointerEventData eventData)
         {
-            Vector3 newPos = transform.position = eventData.position;
-
-            newPos.x = Mathf.Clamp(transform.localPosition.x, -frameSize.x + imgComp.rectTransform.sizeDelta.x / 2, frameSize.x - imgComp.rectTransform.sizeDelta.x / 2);
-            newPos.y = Mathf.Clamp(transform.localPosition.y, -frameSize.y + imgComp.rectTransform.sizeDelta.y / 2, frameSize.y - imgComp.rectTransform.sizeDelta.y / 2);
-
-            transform.localPosition = newPos;
+            OnDrag(eventData);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
             Vector3 newPos = transform.position = eventData.position;
 
-            newPos.x = Mathf.Clamp(transform.localPosition.x, -frameSize.x + imgComp.rectTransform.sizeDelta.x / 2, frameSize.x - imgComp.rectTransform.sizeDelta.x / 2);
-            newPos.y = Mathf.Clamp(transform.localPosition.y, -frameSize.y + imgComp.rectTransform.sizeDelta.y / 2, frameSize.y - imgComp.rectTransform.sizeDelta.y / 2);
+            /*newPos.x = Mathf.Clamp(transform.localPosition.x, -((frameSize.x - imgComp.rectTransform.sizeDelta.x) / 2), (frameSize.x - imgComp.rectTransform.sizeDelta.x) / 2);
+            newPos.y = Mathf.Clamp(transform.localPosition.y, -((frameSize.y - imgComp.rectTransform.sizeDelta.y) / 2), (frameSize.y - imgComp.rectTransform.sizeDelta.y) / 2);*/
 
             transform.localPosition = newPos;
         }
