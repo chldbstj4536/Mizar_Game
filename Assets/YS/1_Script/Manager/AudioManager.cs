@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace YS
 {
-    public class AudioManager : Singleton<AudioManager>
+    public class AudioManager : SingletonMono<AudioManager>
     {
         #region Field
         private AudioSource audioBGM;

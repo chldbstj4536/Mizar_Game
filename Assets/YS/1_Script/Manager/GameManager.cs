@@ -8,7 +8,7 @@ using Sirenix.OdinInspector;
 
 namespace YS
 {
-    public class GameManager : Singleton<GameManager>
+    public class GameManager : SingletonMono<GameManager>
     {
         #region Field
         /// <summary>
@@ -69,7 +69,7 @@ namespace YS
 
         #region Properties
         public Dictionary<string, CustomVariable> VariablesTable => varTable;
-        public SaveLoadData CurrentData
+        public InGameSaveData CurrentData
         {
             get
             {
@@ -83,7 +83,7 @@ namespace YS
                 bgData.items = new List<BackgroundItemData>(bc.RemainItemCount);
                 foreach (var item in bc.Items)
                     bgData.items.Add(new BackgroundItemData(item));
-                return new SaveLoadData(scriptData.CurrentIndex, bgData, IsBackgroundFadeOut, invenComp.Items, vd);
+                return new InGameSaveData(0, scriptData.CurrentIndex, bgData, IsBackgroundFadeOut, invenComp.Items, vd);
             }
         }
         /// <summary>

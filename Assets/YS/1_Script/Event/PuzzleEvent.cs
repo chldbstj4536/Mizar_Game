@@ -59,7 +59,7 @@ namespace YS
             frameImg.sprite = data.puzzleFrameImg;
             for (int i = 0; i < data.pieces.Count; ++i)
             {
-                var ppc = GameObject.Instantiate(ResourceManager.GetResource<GameObject>(ResourcePath.PuzzlePiecePrefabPath), frameImg.transform).GetComponent<PuzzlePieceComponent>();
+                var ppc = GameObject.Instantiate(ResourceManager.GetResource<GameObject>(ResourcePath.PuzzlePiecePrefab), frameImg.transform).GetComponent<PuzzlePieceComponent>();
                 ppc.transform.position = rootPieceTr.position + new Vector3(Random.Range(-randomRange, randomRange), Random.Range(-randomRange, randomRange), 0.0f);
                 ppc.InitializePiece(data.pieces[i].pieceImg, data.pieces[i].correctPos, frameImg.rectTransform.sizeDelta);
                 ppc.OnSuccess += () =>

@@ -22,7 +22,7 @@ namespace YS
             {
                 if (instance == null)
                 {
-                    instance = ResourceManager.GetResource<BackgroundDataSO>(ResourcePath.BackgroundDataPath);
+                    instance = ResourceManager.GetResource<BackgroundDataSO>(ResourcePath.BackgroundData);
                     instance.Initialize();
                 }
                 return instance;

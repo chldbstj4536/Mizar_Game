@@ -9,199 +9,93 @@ using UnityEngine.Video;
 
 namespace YS
 {
-    public class TitleManager : Singleton<TitleManager>
+    public class TitleManager : SingletonMono<TitleManager>
     {
         #region Field
         [BoxGroup("패널", true, true)]
         [LabelText("터치시작 패널")]
         public GameObject clickToStartPanel;
         [BoxGroup("패널")]
-        [LabelText("메뉴 패널"), Tooltip("모든 메뉴들의 상위 패널")]
+        [LabelText("메뉴 패널")]
         public GameObject menuPanel;
+        [BoxGroup("패널")]
+        [LabelText("로드 패널")]
+        public GameObject loadPanel;
+        [BoxGroup("패널")]
+        [LabelText("사진앨범 패널")]
+        public GameObject albumPanel;
         [BoxGroup("패널")]
         [LabelText("설정 컴포넌트")]
         public SettingComponent settingComp;
-        [BoxGroup("패널")]
-        [LabelText("메인 패널")]
-        public GameObject mainPanel;
-        [BoxGroup("패널")]
-        [LabelText("게임시작 패널")]
-        public GameObject startPanel;
-        [BoxGroup("패널")]
-        [LabelText("불러오기 패널")]
-        public GameObject loadPanel;
-        [BoxGroup("패널")]
-        [LabelText("사진첩 패널")]
-        public GameObject galleryPanel;
-        [BoxGroup("패널")]
-        [LabelText("배경")]
-        public SpriteRenderer bg;
 
         [BoxGroup("메인 메뉴", true, true)]
-        [LabelText("설정 버튼")]
-        public Button settingBtn;
+        [LabelText("새 게임 버튼")]
+        public Button newGameBtnInMain;
         [BoxGroup("메인 메뉴")]
-        [LabelText("뒤로가기 버튼")]
-        public Button backBtn;
+        [LabelText("이어하기 버튼")]
+        public Button loadGameBtnInMain;
         [BoxGroup("메인 메뉴")]
-        [LabelText("게임시작 버튼")]
-        public Button startBtn;
+        [LabelText("사진앨범 버튼")]
+        public Button albumBtnInMain;
         [BoxGroup("메인 메뉴")]
-        [LabelText("불러오기 버튼")]
-        public Button loadBtn;
+        [LabelText("환경설정 버튼")]
+        public Button settingBtnInMain;
         [BoxGroup("메인 메뉴")]
-        [LabelText("사진첩 버튼")]
-        public Button galleryBtn;
+        [LabelText("게임종료 버튼")]
+        public Button gameExitBtnInMain;
 
-        [BoxGroup("메인 메뉴/게임시작", true, true)]
-        [LabelText("슬롯1 버튼")]
-        public Button slot1StartBtn;
-        [BoxGroup("메인 메뉴/게임시작")]
-        [LabelText("슬롯2 버튼")]
-        public Button slot2StartBtn;
-        [BoxGroup("메인 메뉴/게임시작")]
-        [LabelText("슬롯3 버튼")]
-        public Button slot3StartBtn;
+        [BoxGroup("불러오기", true, true)]
+        [LabelText("이어하기 버튼")]
+        public LoadButton[] loadGameBtns;
+        [BoxGroup("불러오기")]
+        [LabelText("챕터 로드 버튼")]
+        public ChapterHighlighter[] loadChapterBtns;
+        [BoxGroup("불러오기")]
+        [LabelText("로드패널 나가기 버튼")]
+        public Button exitLoadBtn;
 
-        [BoxGroup("메인 메뉴/불러오기", true, true)]
-        [LabelText("퀵슬롯 버튼")]
-        public Button quickSlotLoadBtn;
-        [BoxGroup("메인 메뉴/불러오기")]
-        [LabelText("슬롯1 버튼")]
-        public Button slot1LoadBtn;
-        [BoxGroup("메인 메뉴/불러오기")]
-        [LabelText("슬롯2 버튼")]
-        public Button slot2LoadBtn;
-        [BoxGroup("메인 메뉴/불러오기")]
-        [LabelText("슬롯3 버튼")]
-        public Button slot3LoadBtn;
-
-        private VideoPlayer vp;
-        private Coroutine coroutineTextPreview;
-        private StateStack stateStack = new StateStack();
-        [ShowInInspector]
-        private int currentState => stateStack.CurrentState;
+        [BoxGroup("사진앨범", true, true)]
+        [LabelText("사진들")]
+        public Button[] albumBtns;
+        [BoxGroup("사진앨범")]
+        [LabelText("앨범 나가기 버튼")]
+        public Button exitAlbumBtn;
         #endregion
 
         #region Unity Methods
         protected override void Awake()
         {
-            Setting.LoadSetting();
-            SaveLoad.WriteSaveData(0, quickSlotLoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
-            SaveLoad.WriteSaveData(1, slot1StartBtn.transform.GetChild(0).GetComponent<TMP_Text>());
-            SaveLoad.WriteSaveData(1, slot1LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
-            SaveLoad.WriteSaveData(2, slot2StartBtn.transform.GetChild(0).GetComponent<TMP_Text>());
-            SaveLoad.WriteSaveData(2, slot2LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
-            SaveLoad.WriteSaveData(3, slot3StartBtn.transform.GetChild(0).GetComponent<TMP_Text>());
-            SaveLoad.WriteSaveData(3, slot3LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            base.Awake();
 
-            vp = Camera.allCameras[0].GetComponent<VideoPlayer>();
+            // 설정 불러오기
+            Setting.LoadSetting();
+            SaveDataManager.Instance.LoadData();
+
+            // 세이브 파일 불러오기
+            for (int i = 0; i < loadGameBtns.Length; ++i)
+                loadGameBtns[i].SetLoadButton(i);
         }
         private void Start()
         {
-            stateStack.OnPushEvent += PushEvent;
-            stateStack.OnPopEvent += PopEvent;
-
-            stateStack.PushState((int)TITLE_UI_STATE.TOUCH_TO_START);
-
-            settingBtn.onClick.AddListener(() => { stateStack.PushState((int)TITLE_UI_STATE.SETTING); });
-            settingComp.OnHideWindowEvent += () => { stateStack.PopState(); };
-            backBtn.onClick.AddListener(() => { stateStack.PopState(); });
-            startBtn.onClick.AddListener(() => { stateStack.PushState((int)TITLE_UI_STATE.GAMESTART); });
-            loadBtn.onClick.AddListener(() => { stateStack.PushState((int)TITLE_UI_STATE.LOAD); });
-            galleryBtn.onClick.AddListener(() => { stateStack.PushState((int)TITLE_UI_STATE.GALLERY); });
-
-            slot1StartBtn.onClick.AddListener(() => { SaveLoad.OnNewGame(1); });
-            slot2StartBtn.onClick.AddListener(() => { SaveLoad.OnNewGame(2); });
-            slot3StartBtn.onClick.AddListener(() => { SaveLoad.OnNewGame(3); });
-
-            quickSlotLoadBtn.onClick.AddListener(() => { SaveLoad.OnStartGame(0); });
-            slot1LoadBtn.onClick.AddListener(() => { SaveLoad.OnStartGame(1); });
-            slot2LoadBtn.onClick.AddListener(() => { SaveLoad.OnStartGame(2); });
-            slot3LoadBtn.onClick.AddListener(() => { SaveLoad.OnStartGame(3); });
+            newGameBtnInMain.onClick.AddListener(() => { SaveDataManager.Instance.StartGameWithChapter(1); });
+            loadGameBtnInMain.onClick.AddListener(() => { menuPanel.SetActive(false); loadPanel.SetActive(true); });
+            albumBtnInMain.onClick.AddListener(() => { menuPanel.SetActive(false); albumPanel.SetActive(true); });
+            gameExitBtnInMain.onClick.AddListener(() => {  });
+            exitLoadBtn.onClick.AddListener(() => { loadPanel.SetActive(false); menuPanel.SetActive(true); });
+            exitAlbumBtn.onClick.AddListener(() => { albumPanel.SetActive(false); menuPanel.SetActive(true); });
+            settingBtnInMain.onClick.AddListener(() => { settingComp.ShowWindow(); });
         }
         private void Update()
         {
-            if (clickToStartPanel.activeInHierarchy && Input.anyKeyDown)
+            if (Input.anyKeyDown && clickToStartPanel.activeInHierarchy)
             {
-                stateStack.PopState();
-                stateStack.PushState((int)TITLE_UI_STATE.MENU);
+                clickToStartPanel.SetActive(false);
+                menuPanel.SetActive(true);
             }
         }
         #endregion
 
         #region Methods
-        public void PushEvent(int stateIndex)
-        {
-            switch ((TITLE_UI_STATE)stateIndex)
-            {
-                case TITLE_UI_STATE.TOUCH_TO_START:
-                    bg.sprite = ResourceManager.GetResource<Sprite>(ResourcePath.TouchToStartBG);
-                    vp.Prepare();
-                    break;
-                case TITLE_UI_STATE.MENU:
-                    if (!vp.isPrepared)
-                        vp.prepareCompleted += (VideoPlayer vp) => { vp.Play(); };
-                    else
-                    {
-                        clickToStartPanel.SetActive(false);
-                        vp.Play();
-                    }
-
-                    vp.loopPointReached += (VideoPlayer vp) =>
-                    {
-                        menuPanel.SetActive(true);
-                    };
-                    break;
-                case TITLE_UI_STATE.SETTING:
-                    settingComp.ShowWindow();
-                    break;
-                case TITLE_UI_STATE.GAMESTART:
-                    mainPanel.SetActive(false);
-                    startPanel.SetActive(true);
-                    break;
-                case TITLE_UI_STATE.LOAD:
-                    mainPanel.SetActive(false);
-                    loadPanel.SetActive(true);
-                    break;
-                case TITLE_UI_STATE.GALLERY:
-                    mainPanel.SetActive(false);
-                    galleryPanel.SetActive(true);
-                    break;
-            }
-        }
-        private void PopEvent(int stateIndex)
-        {
-            switch ((TITLE_UI_STATE)stateIndex)
-            {
-                case TITLE_UI_STATE.TOUCH_TO_START:
-                    break;
-                case TITLE_UI_STATE.MENU:
-                    Application.Quit();
-                    break;
-                case TITLE_UI_STATE.GAMESTART:
-                    startPanel.SetActive(false);
-                    mainPanel.SetActive(true);
-                    break;
-                case TITLE_UI_STATE.LOAD:
-                    loadPanel.SetActive(false);
-                    mainPanel.SetActive(true);
-                    break;
-                case TITLE_UI_STATE.GALLERY:
-                    galleryPanel.SetActive(false);
-                    mainPanel.SetActive(true);
-                    break;
-            }
-        }
         #endregion
-        private enum TITLE_UI_STATE
-        {
-            TOUCH_TO_START,
-            MENU,
-            SETTING,
-            GAMESTART,
-            LOAD,
-            GALLERY
-        }
     }
 }

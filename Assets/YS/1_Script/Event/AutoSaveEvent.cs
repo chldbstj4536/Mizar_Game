@@ -10,7 +10,6 @@ namespace YS
         {
             base.OnEnter();
 
-            SaveLoad.OnOverwriteGame(0, gm.CurrentData);
         }
         protected override void OnUpdate() { }
     }

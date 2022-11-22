@@ -8,7 +8,7 @@ using System;
 
 namespace YS
 {
-    public class InGameUIManager : Singleton<InGameUIManager>
+    public class InGameUIManager : SingletonMono<InGameUIManager>
     {
         public enum INGAME_UI_STATE
         {
@@ -110,13 +110,13 @@ namespace YS
             base.Awake();
 
             Setting.LoadSetting();
-            SaveLoad.WriteSaveData(0, quickSlotLoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
-            SaveLoad.WriteSaveData(1, slot1SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>());
-            SaveLoad.WriteSaveData(1, slot1LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
-            SaveLoad.WriteSaveData(2, slot2SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>());
-            SaveLoad.WriteSaveData(2, slot2LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
-            SaveLoad.WriteSaveData(3, slot3SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>());
-            SaveLoad.WriteSaveData(3, slot3LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            //SaveLoad.WriteSaveData(0, quickSlotLoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            //SaveLoad.WriteSaveData(1, slot1SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            //SaveLoad.WriteSaveData(1, slot1LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            //SaveLoad.WriteSaveData(2, slot2SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            //SaveLoad.WriteSaveData(2, slot2LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            //SaveLoad.WriteSaveData(3, slot3SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>());
+            //SaveLoad.WriteSaveData(3, slot3LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>());
         }
         private void Start()
         {
@@ -134,28 +134,13 @@ namespace YS
             saveBtn.onClick.AddListener(() => { OnPush(INGAME_UI_STATE.SAVE); });
             slot1SaveBtn.onClick.AddListener(() =>
             {
-                SaveLoad.OnOverwriteGame(1, GameManager.Instance.CurrentData);
+                SaveDataManager.Instance.SaveInGameData(1, GameManager.Instance.CurrentData);
                 slot1SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = DateTime.Now.ToString();
                 slot1LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = DateTime.Now.ToString();
             });
-            slot2SaveBtn.onClick.AddListener(() =>
-            {
-                SaveLoad.OnOverwriteGame(2, GameManager.Instance.CurrentData);
-                slot2SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = DateTime.Now.ToString();
-                slot2LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = DateTime.Now.ToString();
-            });
-            slot3SaveBtn.onClick.AddListener(() =>
-            {
-                SaveLoad.OnOverwriteGame(3, GameManager.Instance.CurrentData);
-                slot3SaveBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = DateTime.Now.ToString();
-                slot3LoadBtn.transform.GetChild(0).GetComponent<TMP_Text>().text = DateTime.Now.ToString();
-            });
 
             loadBtn.onClick.AddListener(() => { OnPush(INGAME_UI_STATE.LOAD); });
-            quickSlotLoadBtn.onClick.AddListener(() => { SaveLoad.OnStartGame(0); });
-            slot1LoadBtn.onClick.AddListener(() => { SaveLoad.OnStartGame(1); });
-            slot2LoadBtn.onClick.AddListener(() => { SaveLoad.OnStartGame(2); });
-            slot3LoadBtn.onClick.AddListener(() => { SaveLoad.OnStartGame(3); });
+            quickSlotLoadBtn.onClick.AddListener(() => { SaveDataManager.Instance.StartGameWithSave(0); });
 
             settingBtn.onClick.AddListener(() => { OnPush(INGAME_UI_STATE.SETTING); });
             settingComp.OnHideWindowEvent += () => { stateStack.PopState(); };

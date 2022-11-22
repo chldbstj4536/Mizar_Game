@@ -15,7 +15,7 @@ namespace YS
         [LabelText("타이핑 미리보기")]
         public CustomTMPEffect previewTMP;
         [LabelText("설정 저장 버튼")]
-        public Button saveChangedBtn;
+        public ButtonHighlighter saveChangedBtn;
         [LabelText("설정 닫기 버튼")]
         public Button closeSettingBtn;
         [BoxGroup("경고", true, true)]
@@ -69,7 +69,7 @@ namespace YS
                 Setting.TypingSpeed = (TYPING_SPEED)value;
                 saveChangedBtn.interactable = true;
             });
-            saveChangedBtn.onClick.AddListener(() =>
+            saveChangedBtn.AddListener(() =>
             {
                 Setting.SaveSetting();
                 lastConfigData = Setting.CurrentConfigData;

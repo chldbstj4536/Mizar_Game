@@ -19,7 +19,7 @@ namespace YS
             {
                 if (instance == null)
                 {
-                    instance = ResourceManager.GetResource<PuzzleDataSO>(ResourcePath.PuzzleDataPath);
+                    instance = ResourceManager.GetResource<PuzzleDataSO>(ResourcePath.PuzzleData);
                     instance.Initialize();
                 }
                 return instance;

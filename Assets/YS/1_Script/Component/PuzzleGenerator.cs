@@ -30,7 +30,7 @@ namespace YS
             if (newPieceSprite == null)
                 return;
 
-            var obj = Instantiate(ResourceManager.GetResource<GameObject>(ResourcePath.PuzzlePiecePrefabPath));
+            var obj = Instantiate(ResourceManager.GetResource<GameObject>(ResourcePath.PuzzlePiecePrefab));
             obj.transform.SetParent(transform);
             obj.transform.localPosition = Vector3.zero;
             var img = obj.GetComponent<Image>();

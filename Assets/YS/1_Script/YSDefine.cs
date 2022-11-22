@@ -7,25 +7,36 @@ using Sirenix.OdinInspector;
 
 namespace YS
 {
+    /// <summary>
+    /// 이미지들에 대한 경로 Set
+    /// </summary>
     public class ImageReference
     {
         public const string Mizar_Normal = "Characters/Mizare/Right/mizare_origin.png";
     }
+    /// <summary>
+    /// 리소스들에 대한 경로 집합
+    /// </summary>
     public class ResourcePath
     {
         // Path
-        public static string ItemDataPath => "Data/ItemData";
-        public static string BackgroundDataPath => "Data/BackgroundData";
-        public static string PuzzleDataPath => "Data/PuzzleData";
-        public static string ScriptDataPath => "Data/ScriptData";
+        public static string ItemDatah => "Data/ItemData";
+        public static string BackgroundData => "Data/BackgroundData";
+        public static string PuzzleData => "Data/PuzzleData";
+        public static string ScriptData => "Data/ScriptData";
         // Prefab
-        public static string BGItemPrefabPath => "Prefab/BGItemPrefab";
-        public static string PuzzlePiecePrefabPath => "Prefab/PuzzlePiecePrefab";
+        public static string BGItemPrefab => "Prefab/BGItemPrefab";
+        public static string PuzzlePiecePrefab => "Prefab/PuzzlePiecePrefab";
         // Image
         public static string TouchToStartBG => "Image/TouchToStartBG";
-        // Video
-        public static string TouchToStartVideoPath => "dummy/opening01video";
+        // Material
+        public static string DefaultMtrl => "Material/DefaultMtrl";
+        public static string MonoMtrl => "Material/MonoMtrl";
+        public static string BGFXMtrl => "Material/BGFXMtrl";
     }
+    /// <summary>
+    /// 유니티 에디터에서 쉽게 변수를 다루게 하기 위한 래퍼 클래스
+    /// </summary>
     [System.Serializable, DisableContextMenu]
     public struct VariableData
     {
@@ -34,6 +45,9 @@ namespace YS
         [SerializeReference, LabelText("변수 타입")]
         public CustomVariable value;
     }
+    /// <summary>
+    /// 배경에 대한 정보를 담기 위한 데이터 구조
+    /// </summary>
     [System.Serializable, DisableContextMenu]
     public struct BackgroundData
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace YS
 {
-    public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
+    public class SingletonMono<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static T instance = null;
 
@@ -15,6 +15,21 @@ namespace YS
                 instance = this as T;
             else
                 Destroy(gameObject);
+        }
+    }
+    public class Singleton<T> where T : class, new()
+    {
+        private static T instance = null;
+
+        public static T Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new T();
+
+                return instance;
+            }
         }
     }
 }
