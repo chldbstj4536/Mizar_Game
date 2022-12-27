@@ -24,9 +24,9 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: PuzzleEvent, ns: YS, asm: Assembly-CSharp}
+      type: {class: ChangeBackground, ns: YS, asm: Assembly-CSharp}
       data:
-        puzzleName: Test
+        bgName: Backhill
     00000001:
       type: {class: InferenceEvent, ns: YS, asm: Assembly-CSharp}
       data:

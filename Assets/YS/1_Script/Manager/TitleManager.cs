@@ -80,7 +80,8 @@ namespace YS
             newGameBtnInMain.onClick.AddListener(() => { SaveDataManager.Instance.StartGameWithChapter(1); });
             loadGameBtnInMain.onClick.AddListener(() => { menuPanel.SetActive(false); loadPanel.SetActive(true); });
             albumBtnInMain.onClick.AddListener(() => { menuPanel.SetActive(false); albumPanel.SetActive(true); });
-            gameExitBtnInMain.onClick.AddListener(() => {  });
+            gameExitBtnInMain.onClick.AddListener(() => {
+                Application.Quit(0); });
             exitLoadBtn.onClick.AddListener(() => { loadPanel.SetActive(false); menuPanel.SetActive(true); });
             exitAlbumBtn.onClick.AddListener(() => { albumPanel.SetActive(false); menuPanel.SetActive(true); });
             settingBtnInMain.onClick.AddListener(() => { settingComp.ShowWindow(); });

@@ -24,6 +24,11 @@ namespace YS
             }
         }
 
+        private void OnDisable()
+        {
+            OnPointerExit(null);
+        }
+
         private void Awake()
         {
             text = GetComponent<TMP_Text>();

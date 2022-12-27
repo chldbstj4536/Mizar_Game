@@ -109,7 +109,7 @@ namespace YS
         {
             base.Awake();
 
-            bgMtrl = ResourceManager.GetResource<Material>("BGFXShader");
+            bgMtrl = ResourceManager.GetResource<Material>(ResourcePath.BGFXMtrl);
         }
         void Start()
         {
