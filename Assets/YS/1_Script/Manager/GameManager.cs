@@ -136,6 +136,8 @@ namespace YS
                     invenComp.AddItem(invenItem);
                 foreach (var data in initData.data.variableDatas)
                     varTable.Add(data.name, data.value.Instantiate());
+
+                scriptData = ResourceManager.GetResource<ScriptData>(ResourcePath.ScriptData);
                 scriptData.SetScript(initData.data.scriptIndex);
                 Destroy(initData.gameObject);
             }
