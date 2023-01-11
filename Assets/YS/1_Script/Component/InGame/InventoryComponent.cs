@@ -7,7 +7,7 @@ using Sirenix.OdinInspector;
 
 namespace YS
 {
-    public class InventoryComponent : MonoBehaviour
+    public class InventoryComponent : WindowComponent
     {
         public Transform rootItemTr;
         public Image invenItemImg;
@@ -18,19 +18,19 @@ namespace YS
         private List<ITEM_INDEX> inven = new List<ITEM_INDEX>();
 
         public List<ITEM_INDEX> Items => inven;
-
-        public void OpenInventory()
+        public override void OpenWindow()
         {
-            gameObject.SetActive(true);
+            base.OpenWindow();
+
             invenItemImg.sprite = null;
             invenItemName.text = "";
             invenItemDesc.text = "";
         }
-        public void CloseInventory()
-        {
-            gameObject.SetActive(false);
-        }
 
+        /// <summary>
+        /// 아이템을 인벤토리에 추가합니다.
+        /// </summary>
+        /// <param name="itemIndex">추가할 아이템 인덱스 번호</param>
         public void AddItem(ITEM_INDEX itemIndex)
         {
             inven.Add(itemIndex);
@@ -38,6 +38,10 @@ namespace YS
             item.index = itemIndex;
             item.imageComp.sprite = GameManager.Instance.itemData[itemIndex].img;
         }
+        /// <summary>
+        /// 선택된 아이템의 정보를 인벤토리의 아이템 정보로 보여줍니다.
+        /// </summary>
+        /// <param name="itemIndex">선택된 아이템 인덱스 번호</param>
         public void SetItemInfo(ITEM_INDEX itemIndex)
         {
             var itemData = GameManager.Instance.itemData;

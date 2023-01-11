@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace YS
 {
-    public class SettingComponent : MonoBehaviour
+    public class SettingComponent : WindowComponent 
     {
         [LabelText("배경 볼륨 슬라이더")]
         public Slider bgmVolSlider;
@@ -16,8 +16,6 @@ namespace YS
         public CustomTMPEffect previewTMP;
         [LabelText("설정 저장 버튼")]
         public ButtonHighlighter saveChangedBtn;
-        [LabelText("설정 닫기 버튼")]
-        public Button closeSettingBtn;
         [BoxGroup("경고", true, true)]
         [LabelText("설정 경고 UI")]
         public GameObject configWarningPanel;
@@ -34,25 +32,14 @@ namespace YS
         public delegate void OnHideWindow();
         public event OnHideWindow OnHideWindowEvent;
 
-        public void ShowWindow()
+        protected override void Start()
         {
-            gameObject.SetActive(true);
-            coroutineTextPreview = StartCoroutine(Setting.TextPreview(previewTMP));
-            lastConfigData = Setting.CurrentConfigData;
-            saveChangedBtn.interactable = false;
-        }
-        public void HideWindow()
-        {
-            StopCoroutine(coroutineTextPreview);
-            previewTMP.SkipTyping();
-            gameObject.SetActive(false);
-            OnHideWindowEvent?.Invoke();
-        }
-        private void Start()
-        {
+            base.Start();
+
             bgmVolSlider.value = AudioManager.BaseBGMVolume;
             fxVolSlider.value = AudioManager.BaseFXVolume;
             typingSlider.value = (float)Setting.TypingSpeed;
+            lastConfigData = Setting.CurrentConfigData;
 
             bgmVolSlider.onValueChanged.AddListener((float value) =>
             {
@@ -75,21 +62,16 @@ namespace YS
                 lastConfigData = Setting.CurrentConfigData;
                 saveChangedBtn.interactable = false;
             });
-            closeSettingBtn.onClick.AddListener(() =>
-            {
-                if (saveChangedBtn.interactable)
-                    configWarningPanel.SetActive(true);
-                else
-                    HideWindow();
-            });
             configWarningNoBtn.onClick.AddListener(() =>
             {
                 Setting.SetSetting(lastConfigData);
                 bgmVolSlider.value = AudioManager.BaseBGMVolume;
                 fxVolSlider.value = AudioManager.BaseFXVolume;
                 typingSlider.value = (float)Setting.TypingSpeed;
+
+                saveChangedBtn.interactable = false;
                 configWarningPanel.SetActive(false);
-                HideWindow();
+                CloseWindow();
             });
             configWarningYesBtn.onClick.AddListener(() =>
             {
@@ -97,8 +79,26 @@ namespace YS
                 saveChangedBtn.interactable = false;
 
                 configWarningPanel.SetActive(false);
-                HideWindow();
+                CloseWindow();
             });
+        }
+        public override void OpenWindow()
+        {
+            base.OpenWindow();
+            coroutineTextPreview = StartCoroutine(Setting.TextPreview(previewTMP));
+            saveChangedBtn.interactable = false;
+        }
+        public override void CloseWindow()
+        {
+            if (!configWarningPanel.activeInHierarchy && saveChangedBtn.interactable)
+                configWarningPanel.SetActive(true);
+            else
+            {
+                StopCoroutine(coroutineTextPreview);
+                previewTMP.SkipTyping();
+                gameObject.SetActive(false);
+                OnHideWindowEvent?.Invoke();
+            }
         }
     }
 }

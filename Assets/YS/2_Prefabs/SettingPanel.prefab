@@ -373,7 +373,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -617,12 +617,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 935f1d33b80e04048a9a0c557df02e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  exitBtn: {fileID: 3670682782000833011}
   bgmVolSlider: {fileID: 1159631439461263577}
   fxVolSlider: {fileID: 9198396699394062936}
   typingSlider: {fileID: 9198396700746327749}
   previewTMP: {fileID: 319754790381394069}
   saveChangedBtn: {fileID: 6593820074140595606}
-  closeSettingBtn: {fileID: 3670682782000833011}
   configWarningPanel: {fileID: 2638711900094594277}
   configWarningYesBtn: {fileID: 4433394481677918349}
   configWarningNoBtn: {fileID: 5050934114370381388}
@@ -643,7 +643,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2264420067669829772
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1295,11 +1295,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2005113430082022654, guid: 4973f8e3f10027d49b990e86453a9603, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 33.13
       objectReference: {fileID: 0}
     - target: {fileID: 2005113430082022654, guid: 4973f8e3f10027d49b990e86453a9603, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 36.01
       objectReference: {fileID: 0}
     - target: {fileID: 2005113430082022654, guid: 4973f8e3f10027d49b990e86453a9603, type: 3}
       propertyPath: m_LocalScale.x
@@ -1424,11 +1424,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2005113430082022654, guid: 4973f8e3f10027d49b990e86453a9603, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 99.37
       objectReference: {fileID: 0}
     - target: {fileID: 2005113430082022654, guid: 4973f8e3f10027d49b990e86453a9603, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 36.01
       objectReference: {fileID: 0}
     - target: {fileID: 2005113430082022654, guid: 4973f8e3f10027d49b990e86453a9603, type: 3}
       propertyPath: m_LocalScale.x

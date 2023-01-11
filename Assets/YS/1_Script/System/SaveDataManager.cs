@@ -19,6 +19,14 @@ namespace YS
 
         public SaveDataManager() { LoadData(); }
 
+
+        /// <summary>
+        /// 처음부터 게임을 시작한다
+        /// </summary>
+        public void StartGame()
+        {
+            StartGame(InGameSaveData.NewSaveData);
+        }
         /// <summary>
         /// 선택된 save파일의 정보를 읽고 해당 정보를 바탕으로 게임을 시작한다
         /// </summary>
@@ -26,14 +34,6 @@ namespace YS
         public void StartGameWithSave(int saveIndex)
         {
             StartGame(data[saveIndex]);
-        }
-        /// <summary>
-        /// 선택된 chapter를 바탕으로 게임을 시작한다
-        /// </summary>
-        /// <param name="chapter">시작할 챕터 번호</param>
-        public void StartGameWithChapter(int chapter)
-        {
-            StartGame(new InGameSaveData(chapter));
         }
         private void StartGame(InGameSaveData data)
         {
@@ -112,11 +112,12 @@ namespace YS
         }
     }
 
+    /// <summary>
+    /// 세이브되는 정보들에 대한 구조체
+    /// </summary>
     [System.Serializable]
     public struct InGameSaveData
     {
-        // 진행중인 게임의 챕터 번호
-        public int chapter;
         // 진행중인 스크립트 번호
         public int scriptIndex;
         // 배경
@@ -130,21 +131,18 @@ namespace YS
         // 저장 시간
         public string saveTime;
 
-        public bool InvalidData => chapter == 0;
+        public static InGameSaveData NewSaveData => new InGameSaveData
+        {
+            scriptIndex = 0,
+            bgData = new BackgroundData(),
+            isFadeOut = false,
+            invenItems = new List<ITEM_INDEX>(),
+            variableDatas = ResourceManager.GetResource<ScriptData>(ResourcePath.ScriptData).VariableDatas,
+            saveTime = "No Data"
+        };
 
-        public InGameSaveData(int chapter)
+        public InGameSaveData(int scriptIndex, BackgroundData bgData, bool isFadeOut, List<ITEM_INDEX> invenItems, List<VariableData> variableDatas)
         {
-            this.chapter = chapter;
-            scriptIndex = 0;
-            bgData = new BackgroundData();
-            isFadeOut = false;
-            invenItems = new List<ITEM_INDEX>();
-            variableDatas = ResourceManager.GetResource<ScriptData>(ResourcePath.ScriptData).VariableDatas;
-            saveTime = DateTime.Now.ToString();
-        }
-        public InGameSaveData(int chapter, int scriptIndex, BackgroundData bgData, bool isFadeOut, List<ITEM_INDEX> invenItems, List<VariableData> variableDatas)
-        {
-            this.chapter = chapter;
             this.scriptIndex = scriptIndex;
             this.bgData = bgData;
             this.isFadeOut = isFadeOut;
@@ -158,7 +156,7 @@ namespace YS
     public struct SaveData
     {
         public int unlockChapter;
-        private List<InGameSaveData> inGameSaveDatas;
+        public List<InGameSaveData> inGameSaveDatas;
 
         public InGameSaveData this[int index]
         {
@@ -167,9 +165,9 @@ namespace YS
         }
         private void CheckExistInGameSaveData(int index)
         {
-            if (inGameSaveDatas == null) inGameSaveDatas = new List<InGameSaveData>();
+            inGameSaveDatas ??= new List<InGameSaveData>();
             while (inGameSaveDatas.Count <= index)
-                inGameSaveDatas.Add(new InGameSaveData());
+                inGameSaveDatas.Add(InGameSaveData.NewSaveData);
         }
     }
 }

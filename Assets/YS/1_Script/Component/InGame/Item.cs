@@ -29,7 +29,7 @@ namespace YS
         }
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (InGameUIManager.Instance.IsShowingInventory)
+            if (InGameUIManager.Instance.invenComp.gameObject.activeInHierarchy)
                 GameManager.Instance.invenComp.SetItemInfo(index);
             else
                 GameManager.Instance.ivSystem.OnFindItem(this);

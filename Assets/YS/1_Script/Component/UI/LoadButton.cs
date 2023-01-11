@@ -11,20 +11,30 @@ namespace YS
         [SerializeField]
         private TMP_Text text;
         [SerializeField]
-        private Button exitBtn;
-        private int index;
+        private Button removeBtn;
+        private int slotIndex;
 
         private InGameSaveData loadData;
 
+        private void Start()
+        {
+            preview.GetComponent<Button>().onClick.AddListener(() => { SaveDataManager.Instance.StartGameWithSave(slotIndex); });
+            removeBtn.onClick.AddListener(() =>
+            {
+                SaveDataManager.Instance.SaveInGameData(slotIndex, InGameSaveData.NewSaveData);
+                SetLoadButton(slotIndex);
+            });
+        }
+
         public void SetLoadButton(int index)
         {
-            this.index = index;
+            slotIndex = index;
             loadData = SaveDataManager.Instance.GetInGameSaveData(index);
-            if (!loadData.InvalidData)
-            {
+            if (loadData.bgData.img == null)
+                preview.sprite = ResourceManager.GetResource<Sprite>(ResourcePath.LoadPreviewDefaultImg);
+            else
                 preview.sprite = loadData.bgData.img;
-                text.text = loadData.saveTime;
-            }
+            text.text = loadData.saveTime;
         }
     }
 }

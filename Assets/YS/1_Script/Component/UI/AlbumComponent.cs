@@ -23,9 +23,6 @@ namespace YS
         [LabelText("¾Ù¹ü À©µµ¿ì ´Ý±â ¹öÆ°")]
         public Button awExitBtn;
         [BoxGroup("¾Ù¹ü À©µµ¿ì")]
-        [LabelText("¾Ù¹ü À©µµ¿ì Ã©ÅÍ TMP")]
-        public TMP_Text awChTmp;
-        [BoxGroup("¾Ù¹ü À©µµ¿ì")]
         [LabelText("¾Ù¹ü À©µµ¿ì ¾Ù¹ü ÀÌ¸§ TMP")]
         public TMP_Text awNameTmp;
 
@@ -47,8 +44,7 @@ namespace YS
                 RectTransform child = transform.GetChild(i) as RectTransform;
                 imgs[i] = child.GetComponent<Image>().sprite;
                 btns[i] = child.GetComponent<Button>();
-                string ch = child.GetChild(0).GetComponent<TMP_Text>().text;
-                string name = child.GetChild(1).GetComponent<TMP_Text>().text;
+                string name = child.GetChild(0).GetComponent<TMP_Text>().text;
 
                 child.anchorMax = child.anchorMin = child.pivot = new Vector2((i % 4) < 2 ? 0 : 1, (i % 4) % 2 == 0 ? 1 : 0);
                 child.anchoredPosition = Vector3.zero;
@@ -58,7 +54,6 @@ namespace YS
                 {
                     albumWindowPanel.SetActive(true);
                     awImg.sprite = imgs[index];
-                    awChTmp.text = ch;
                     awNameTmp.text = name;
                 });
             }

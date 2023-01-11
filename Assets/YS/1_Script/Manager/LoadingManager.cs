@@ -18,8 +18,10 @@ namespace YS
             if (ld == null)
                 StartCoroutine(LoadData(LOADING_SCENE.TITLE));
             else
+            {
                 StartCoroutine(LoadData(ld.loadingScene));
-
+                DestroyImmediate(ld.gameObject);
+            }
         }
         // Update is called once per frame
         void Update()
@@ -47,11 +49,9 @@ namespace YS
                     DontDestroyOnLoad(FindObjectOfType<InGameInitData>().gameObject);
                     break;
             }
-
+            
             while (!oper.isDone)
                 yield return CachedWaitForSeconds.Get(0.1f);
-
-            Debug.Log("Load Complete!!");
         }
     }
 }

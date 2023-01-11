@@ -28,7 +28,7 @@ namespace YS
         public static string BGItemPrefab => "Prefab/BGItemPrefab";
         public static string PuzzlePiecePrefab => "Prefab/PuzzlePiecePrefab";
         // Image
-        public static string TouchToStartBG => "Image/TouchToStartBG";
+        public static string LoadPreviewDefaultImg => "Image/LoadPreviewDefaultImg";
         // Material
         public static string DefaultMtrl => "Material/DefaultMtrl";
         public static string MonoMtrl => "Material/MonoMtrl";

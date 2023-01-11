@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8950532429273075945}
   - component: {fileID: 8950532429273075946}
   m_Layer: 5
-  m_Name: ExitButton
+  m_Name: RemoveButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -427,4 +427,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   preview: {fileID: 8950532430830198870}
   text: {fileID: 8950532429706540968}
-  exitBtn: {fileID: 8950532429273075946}
+  removeBtn: {fileID: 8950532429273075946}

@@ -12,10 +12,13 @@ namespace YS
     public class TitleManager : SingletonMono<TitleManager>
     {
         #region Field
+        [BoxGroup("책")]
+        [LabelText("책 컴포넌트")]
+        public Book bookComp;
+        private AutoFlip bookFlipper;
+        [LabelText("책 이미지")]
+        public Sprite[] bookImgs;
         [BoxGroup("패널", true, true)]
-        [LabelText("터치시작 패널")]
-        public GameObject clickToStartPanel;
-        [BoxGroup("패널")]
         [LabelText("메뉴 패널")]
         public GameObject menuPanel;
         [BoxGroup("패널")]
@@ -69,29 +72,77 @@ namespace YS
 
             // 설정 불러오기
             Setting.LoadSetting();
-            SaveDataManager.Instance.LoadData();
 
             // 세이브 파일 불러오기
             for (int i = 0; i < loadGameBtns.Length; ++i)
                 loadGameBtns[i].SetLoadButton(i);
+
+            bookFlipper = bookComp.GetComponent<AutoFlip>();
         }
         private void Start()
         {
-            newGameBtnInMain.onClick.AddListener(() => { SaveDataManager.Instance.StartGameWithChapter(1); });
-            loadGameBtnInMain.onClick.AddListener(() => { menuPanel.SetActive(false); loadPanel.SetActive(true); });
-            albumBtnInMain.onClick.AddListener(() => { menuPanel.SetActive(false); albumPanel.SetActive(true); });
-            gameExitBtnInMain.onClick.AddListener(() => {
-                Application.Quit(0); });
-            exitLoadBtn.onClick.AddListener(() => { loadPanel.SetActive(false); menuPanel.SetActive(true); });
-            exitAlbumBtn.onClick.AddListener(() => { albumPanel.SetActive(false); menuPanel.SetActive(true); });
-            settingBtnInMain.onClick.AddListener(() => { settingComp.ShowWindow(); });
+            newGameBtnInMain.onClick.AddListener(() => { SaveDataManager.Instance.StartGame(); });
+            loadGameBtnInMain.onClick.AddListener(() =>
+            {
+                menuPanel.SetActive(false);
+                bookComp.bookPages[3] = bookImgs[0];
+                bookComp.bookPages[4] = bookImgs[1];
+                bookFlipper.FlipRightPage();
+                bookComp.OnPageRelease = () =>
+                {
+                    loadPanel.SetActive(true);
+                };
+            });
+            albumBtnInMain.onClick.AddListener(() =>
+            {
+                menuPanel.SetActive(false);
+                bookComp.bookPages[3] = bookImgs[2];
+                bookComp.bookPages[4] = bookImgs[3];
+                bookFlipper.FlipRightPage();
+                bookComp.OnPageRelease = () =>
+                {
+                    albumPanel.SetActive(true);
+                };
+            });
+            gameExitBtnInMain.onClick.AddListener(() =>
+            {
+                menuPanel.SetActive(false);
+                bookFlipper.FlipLeftPage();
+                bookComp.OnPageRelease = () =>
+                {
+                    bookComp.GetComponent<Animator>().SetBool("bStart", false);
+                };
+            });
+            exitLoadBtn.onClick.AddListener(() =>
+            {
+                loadPanel.SetActive(false);
+                bookFlipper.FlipLeftPage();
+                bookComp.OnPageRelease = () =>
+                {
+                    menuPanel.SetActive(true);
+                };
+            });
+            exitAlbumBtn.onClick.AddListener(() =>
+            {
+                albumPanel.SetActive(false);
+                bookFlipper.FlipLeftPage();
+                bookComp.OnPageRelease = () =>
+                {
+                    menuPanel.SetActive(true);
+                };
+            });
+            settingBtnInMain.onClick.AddListener(() => { settingComp.OpenWindow(); });
         }
         private void Update()
         {
-            if (Input.anyKeyDown && clickToStartPanel.activeInHierarchy)
+            if (Input.anyKeyDown && bookComp.currentPage == 0)
             {
-                clickToStartPanel.SetActive(false);
-                menuPanel.SetActive(true);
+                bookComp.GetComponent<Animator>().SetBool("bStart", true);
+                bookComp.OnPageRelease = () =>
+                {
+                    menuPanel.SetActive(true);
+                    bookComp.bookPages[0] = bookImgs[4];
+                };
             }
         }
         #endregion

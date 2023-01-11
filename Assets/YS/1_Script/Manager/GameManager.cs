@@ -83,7 +83,7 @@ namespace YS
                 bgData.items = new List<BackgroundItemData>(bc.RemainItemCount);
                 foreach (var item in bc.Items)
                     bgData.items.Add(new BackgroundItemData(item));
-                return new InGameSaveData(0, scriptData.CurrentIndex, bgData, IsBackgroundFadeOut, invenComp.Items, vd);
+                return new InGameSaveData(scriptData.CurrentIndex, bgData, IsBackgroundFadeOut, invenComp.Items, vd);
             }
         }
         /// <summary>
@@ -113,11 +113,13 @@ namespace YS
         }
         void Start()
         {
+            // 변수 초기값 설정
             um = InGameUIManager.Instance;
             bc = BackgroundComponent.Instance;
-
             IsBackgroundFadeOut = true;
             BackgroundCurrentTime = 0.0f;
+
+            // 게임 시스템 초기화
             dialogSystem.Initialize();
             choiceSystem.Initialize();
             ivSystem.Initialize();
@@ -125,6 +127,7 @@ namespace YS
             arSystem.Initialize();
             puzzleSystem.Initialize();
             
+            // 저장된 데이터 불러오기
             var initData = GameObject.FindObjectOfType<InGameInitData>();
             if (initData != null)
             {
@@ -147,35 +150,7 @@ namespace YS
         }
         void Update()
         {
-            if (um.CurrentState == InGameUIManager.INGAME_UI_STATE.GAME)
-                OnUpdateEvent?.Invoke();
-
-
-            // Save 단축키
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                
-            }
-            // Item 단축키
-            else if (Input.GetKeyDown(KeyCode.E))
-            {
-
-            }
-            // Log 단축키
-            else if (Input.GetKeyDown(KeyCode.Q))
-            {
-
-            }
-            // Settings 단축키
-            else if (Input.GetKeyDown(KeyCode.R))
-            {
-
-            }
-            // Menu 단축키
-            else if (Input.GetKeyDown(KeyCode.Tab))
-            {
-
-            }
+            OnUpdateEvent?.Invoke();
         }
         private void OnDestroy()
         {
@@ -188,8 +163,7 @@ namespace YS
         {
             bool result;
 
-            // GameState이고
-            result = um.CurrentState == InGameUIManager.INGAME_UI_STATE.GAME &&
+            result = 
                      // 스페이스 키가 눌렸거나
                      Input.GetKeyDown(KeyCode.Space) ||
                      // UI가 아닌곳에 마우스 클릭 이벤트가 발생했을때
@@ -202,6 +176,7 @@ namespace YS
         /// </summary>
         public void Logging(string str)
         {
+            log.Append("________________________________________________________________________\n");
             log.Append(str);
             logTMP.SetText(log);
         }
