@@ -122,6 +122,7 @@ namespace YS
         // sideFX 코루틴 정보 (스킵 시 사용)
         private Coroutine[] sideFXCoroutine;
         private GameManager gm;
+        private InGameUIManager uim;
 #endregion
 
 #region Properties
@@ -132,6 +133,7 @@ namespace YS
         public void Initialize()
         {
             gm = GameManager.Instance;
+            uim = InGameUIManager.Instance;
 
             sidePos = new Vector3[3];
             // 초기화를 위해 처음의 Left, Right 사이드 이미지의 위치 얻기
@@ -161,7 +163,7 @@ namespace YS
             else
                 nameTMP.transform.parent.gameObject.SetActive(true);
 
-            gm.Logging($"<b>{de.Name}</b>\n<size=40>{de.Script}</size>\n");
+            gm.Logging($"<b><size={uim.logNameSize}>{de.Name}</size></b>\n<size={uim.logDescSize}>        {de.Script}</size>\n");
 
             nameTMP.SetText(de.Name);
             scriptTMP.SetText(de.Script);

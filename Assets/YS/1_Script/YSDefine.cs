@@ -58,6 +58,15 @@ namespace YS
         [LabelText("아이템들")]
         public List<BackgroundItemData> items;
     }
+    [System.Serializable, DisableContextMenu]
+    public struct BGMData
+    {
+        public AudioClip bgm;
+        public float vol;
+        public bool bLoop;
+        public float playTime;
+        public float dampingTime;
+    }
     [System.Serializable]
     public struct BackgroundItemData
     {

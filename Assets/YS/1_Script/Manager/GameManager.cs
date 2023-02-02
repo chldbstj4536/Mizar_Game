@@ -83,7 +83,7 @@ namespace YS
                 bgData.items = new List<BackgroundItemData>(bc.RemainItemCount);
                 foreach (var item in bc.Items)
                     bgData.items.Add(new BackgroundItemData(item));
-                return new InGameSaveData(scriptData.CurrentIndex, bgData, IsBackgroundFadeOut, invenComp.Items, vd);
+                return new InGameSaveData(scriptData.CurrentIndex, bgData, IsBackgroundFadeOut, invenComp.Items, AudioManager.GetBgmData(), vd);
             }
         }
         /// <summary>
@@ -137,6 +137,11 @@ namespace YS
                 BackgroundCurrentTime = 1.0f;
                 foreach (var invenItem in initData.data.invenItems)
                     invenComp.AddItem(invenItem);
+                AudioManager.PlayBGM(initData.data.bgmData.bgm,
+                    initData.data.bgmData.bLoop,
+                    initData.data.bgmData.playTime,
+                    initData.data.bgmData.dampingTime,
+                    initData.data.bgmData.vol);
                 foreach (var data in initData.data.variableDatas)
                     varTable.Add(data.name, data.value.Instantiate());
 
@@ -176,8 +181,9 @@ namespace YS
         /// </summary>
         public void Logging(string str)
         {
-            log.Append("________________________________________________________________________\n");
             log.Append(str);
+            log.Append("________________________________________________________________________\n");
+            log.Append("<size=50> </size>");
             logTMP.SetText(log);
         }
 

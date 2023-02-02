@@ -126,6 +126,8 @@ namespace YS
         public bool isFadeOut;
         // 보유 아이템
         public List<ITEM_INDEX> invenItems;
+        // 배경 음악
+        public BGMData bgmData;
         // 변수 상태
         public List<VariableData> variableDatas;
         // 저장 시간
@@ -137,16 +139,18 @@ namespace YS
             bgData = new BackgroundData(),
             isFadeOut = false,
             invenItems = new List<ITEM_INDEX>(),
+            bgmData = new BGMData(),
             variableDatas = ResourceManager.GetResource<ScriptData>(ResourcePath.ScriptData).VariableDatas,
             saveTime = "No Data"
         };
 
-        public InGameSaveData(int scriptIndex, BackgroundData bgData, bool isFadeOut, List<ITEM_INDEX> invenItems, List<VariableData> variableDatas)
+        public InGameSaveData(int scriptIndex, BackgroundData bgData, bool isFadeOut, List<ITEM_INDEX> invenItems, BGMData bgmData, List<VariableData> variableDatas)
         {
             this.scriptIndex = scriptIndex;
             this.bgData = bgData;
             this.isFadeOut = isFadeOut;
             this.invenItems = invenItems;
+            this.bgmData = bgmData;
             this.variableDatas = variableDatas;
             saveTime = DateTime.Now.ToString();
         }

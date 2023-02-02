@@ -6,6 +6,9 @@ using Sirenix.OdinInspector;
 
 namespace YS
 {
+    /// <summary>
+    /// 기본 이벤트 클래스
+    /// </summary>
     [System.Serializable]
     public abstract class BaseScriptEvent
     {

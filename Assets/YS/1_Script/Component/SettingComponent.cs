@@ -9,7 +9,9 @@ namespace YS
         [LabelText("배경 볼륨 슬라이더")]
         public Slider bgmVolSlider;
         [LabelText("효과음 볼륨 슬라이더")]
-        public Slider fxVolSlider;
+        public CustomSlider fxVolSlider;
+        [LabelText("효과음 볼륨 테스트 음악")]
+        public AudioClip fxTestClip;
         [LabelText("타이핑 속도 슬라이더")]
         public Slider typingSlider;
         [LabelText("타이핑 미리보기")]
@@ -51,6 +53,7 @@ namespace YS
                 AudioManager.BaseFXVolume = value;
                 saveChangedBtn.interactable = true;
             });
+            fxVolSlider.onPointerUpEvent += () => { AudioManager.PlayFX(fxTestClip); };
             typingSlider.onValueChanged.AddListener((float value) =>
             {
                 Setting.TypingSpeed = (TYPING_SPEED)value;

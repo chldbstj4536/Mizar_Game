@@ -12,8 +12,10 @@ namespace YS
 
         private float audioBGMVolume;
         private float audioFXVolume;
-        private float audioBGMTempVolume;
-        private float audioFXTempVolume;
+        private float audioBGMTempVolume = 1.0f;
+        private float audioFXTempVolume = 1.0f;
+        private float audioBGMPlayTime;
+        private float audioBGMDampingTime;
         #endregion
 
         #region Unity Methods
@@ -24,12 +26,6 @@ namespace YS
             audioBGM = transform.GetChild(0).GetComponent<AudioSource>();
             audioFX = transform.GetChild(1).GetComponent<AudioSource>();
             DontDestroyOnLoad(gameObject);
-
-            // 볼륨도 저장데이터에 포함된다면 여기서 초기화.
-            //Instance.audioBGMVolume = saveData.volume;
-            //Instance.audioFXVolume = saveData.volumeFX;
-            audioBGMVolume = 1.0f;
-            audioFXVolume = 1.0f;
         }
         #endregion
 
@@ -84,6 +80,8 @@ namespace YS
             am.audioBGM.clip = newBGM;
             am.audioBGM.loop = isLoop;
             am.audioBGM.Play();
+            am.audioBGMPlayTime = playTime;
+            am.audioBGMDampingTime = dampingTime;
 
             if (!isLoop)
                 am.StartCoroutine(am.StopTimer(playTime, dampingTime));
@@ -121,6 +119,19 @@ namespace YS
                 audioBGM.volume -= dTime;
             }
             audioBGM.volume = 0.0f;
+        }
+        public static BGMData GetBgmData()
+        {
+            var am = AudioManager.Instance;
+
+            var bgmData = new BGMData();
+            bgmData.bgm = am.audioBGM.clip;
+            bgmData.vol = AudioManager.TempBGMVolume;
+            bgmData.bLoop = am.audioBGM.loop;
+            bgmData.playTime = am.audioBGMPlayTime;
+            bgmData.dampingTime = am.audioBGMDampingTime;
+
+            return bgmData;
         }
         #endregion
     }

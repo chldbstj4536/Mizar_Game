@@ -49,7 +49,7 @@ namespace YS
                     DontDestroyOnLoad(FindObjectOfType<InGameInitData>().gameObject);
                     break;
             }
-            
+
             while (!oper.isDone)
                 yield return CachedWaitForSeconds.Get(0.1f);
         }

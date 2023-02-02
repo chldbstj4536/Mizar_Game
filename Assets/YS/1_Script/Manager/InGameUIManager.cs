@@ -23,6 +23,9 @@ namespace YS
         [BoxGroup("패널")]
         [LabelText("설정")]
         public WindowComponent settingComp;
+        [BoxGroup("패널")]
+        [LabelText("종료")]
+        public WindowComponent exitWin;
 
         [BoxGroup("UI", true, true)]
         [LabelText("UI 패널")]
@@ -47,6 +50,9 @@ namespace YS
         public Button exitBtn;
 
         public SaveButton[] saveGameBtns;
+        public Button exitYesBtn;
+        public float logNameSize = 36;
+        public float logDescSize = 30;
 
         private bool isInGame = true;
         private bool uiOn = true;
@@ -71,16 +77,10 @@ namespace YS
         {
             togBtn.onClick.AddListener(() =>
             {
-                if (uiOn)
-                {
-                    uiOn = false;
+                if (uiOn = !uiOn)
                     uiSE.SetSlide(Vector2.zero, false);
-                }
                 else
-                {
-                    uiOn = true;
                     uiSE.SetSlide(Vector2.down * 150, false);
-                }
             });
 
             invenComp.OnOpenEvent = () => { isInGame = false; };
@@ -91,12 +91,15 @@ namespace YS
             logComp.OnCloseEvent = () => { isInGame = true; };
             settingComp.OnOpenEvent = () => { isInGame = false; };
             settingComp.OnCloseEvent = () => { isInGame = true; };
+            exitWin.OnOpenEvent = () => { isInGame = false; };
+            exitWin.OnCloseEvent = () => { isInGame = true; };
 
             invenBtn.onClick.AddListener(() => { invenComp.OpenWindow(); });
             saveBtn.onClick.AddListener(() => { saveComp.OpenWindow(); });
             logBtn.onClick.AddListener(() => { logComp.OpenWindow(); });
             settingBtn.onClick.AddListener(() => { settingComp.OpenWindow(); });
-            exitBtn.onClick.AddListener(() => { ExitGame(); });
+            exitBtn.onClick.AddListener(() => { exitWin.OpenWindow(); });
+            exitYesBtn.onClick.AddListener(ExitGame);
         }
         private void Update()
         {
