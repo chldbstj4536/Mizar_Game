@@ -3908,7 +3908,7 @@ MonoBehaviour:
     000000A6:
       type: {class: ChangeBackground, ns: YS, asm: Assembly-CSharp}
       data:
-        bgName: Backhill_no item
+        bgName: Backhill
     000000A7:
       type: {class: DialogEvent, ns: YS, asm: Assembly-CSharp}
       data:
