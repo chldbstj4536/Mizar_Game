@@ -24,14 +24,40 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: ChangeBackground, ns: YS, asm: Assembly-CSharp}
+      type: {class: DialogEvent, ns: YS, asm: Assembly-CSharp}
       data:
-        bgName: Backhill
+        screenEffect: 0
+        leftCharacter:
+          image: {fileID: 21300000, guid: fbdbe444b92f482409242f899237d6c2, type: 3}
+          isMirror: 0
+          isHighlight: 0
+          effect: 6
+        centerCharacter:
+          image: {fileID: 21300000, guid: be0faa9f4ac2856428bfcb8e0ebb1599, type: 3}
+          isMirror: 0
+          isHighlight: 0
+          effect: 5
+        rightCharacter:
+          image: {fileID: 0}
+          isMirror: 0
+          isHighlight: 0
+          effect: 0
+        isAuto: 0
+        autoTime: 1
+        name: sdg
+        script: fdgsd
     00000001:
-      type: {class: PlayBGM, ns: YS, asm: Assembly-CSharp}
+      type: {class: CompareEvent, ns: YS, asm: Assembly-CSharp}
       data:
-        audioBGM: {fileID: 0}
-        volume: 1
-        isLoop: 1
-        playTime: 0
-        dampingTime: 0
+        cpDatas:
+        - name: "\uC54C\uD401\uC2A4 \uAE38"
+          fpImg: {fileID: 21300000, guid: 26870c414d7a23c4c9c93e3a985f0302, type: 3}
+        - name: "\uC5D0\uB4DC \uD53C\uC26C"
+          fpImg: {fileID: 21300000, guid: 04dafbbb7c924604196bf2e5b9746d27, type: 3}
+        - name: "\uB9AD \uC5D8\uB7F0"
+          fpImg: {fileID: 21300000, guid: a42d15bc52309c340b54014f869b7136, type: 3}
+        - name: "\uC874 \uD544\uB9BD\uC2A4"
+          fpImg: {fileID: 21300000, guid: a548092d56f12d144958d6daae5d7676, type: 3}
+        answerData:
+          name: "\uC54C\uD401\uC2A4 \uAE38"
+          fpImg: {fileID: 21300000, guid: 26870c414d7a23c4c9c93e3a985f0302, type: 3}

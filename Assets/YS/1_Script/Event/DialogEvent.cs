@@ -116,6 +116,9 @@ namespace YS
         [FoldoutGroup("다이얼로그 UI/캐릭터 바운스 효과", false)]
         [LabelText("높이"), Tooltip("캐릭터가 뛰어오르는 높이")]
         public float bounceHeight = 100.0f;
+        [FoldoutGroup("다이얼로그 UI/캐릭터 페이드 효과", false)]
+        [LabelText("페이드 시간"), Tooltip("페이드 인/아웃 되는 시간")]
+        public float fadeTime = 3.0f;
 
         // sideImg의 초기 위치 (FX초기화 할 때 사용)
         private Vector3[] sidePos;
@@ -224,6 +227,12 @@ namespace YS
                 case CHARACTER_EFFECT_INDEX.BOUNCE:
                     sideFXCoroutine[(int)side] = gm.StartCoroutine(gm.BounceEffect(sideImg[(int)side].gameObject.transform, bounceTime, bounceHeight));
                     break;
+                case CHARACTER_EFFECT_INDEX.FADE_IN:
+                    sideFXCoroutine[(int)side] = gm.StartCoroutine(gm.CharacterFadeEffect(sideImg[(int)side], false, fadeTime));
+                    break;
+                case CHARACTER_EFFECT_INDEX.FADE_OUT:
+                    sideFXCoroutine[(int)side] = gm.StartCoroutine(gm.CharacterFadeEffect(sideImg[(int)side], true, fadeTime));
+                    break;
             }
         }
         /// <summary>
@@ -289,6 +298,8 @@ namespace YS
         SHAKE_VERTICAL,
         SHAKE_HORIZONTAL,
         SHAKE_RANDOM,
-        BOUNCE
+        BOUNCE,
+        FADE_IN,
+        FADE_OUT
     }
 }

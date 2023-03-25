@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using Sirenix.OdinInspector;
@@ -42,6 +43,12 @@ namespace YS
         /// </summary>
         [HideLabel]
         public PuzzleSystem puzzleSystem;
+
+        [HideLabel]
+        public TakeSystem tkSystem;
+
+        [HideLabel]
+        public CompareSystem cpSystem;
 
         [LabelText("로그 TMP")]
         public TMP_Text logTMP;
@@ -126,6 +133,8 @@ namespace YS
             ifSystem.Initialize();
             arSystem.Initialize();
             puzzleSystem.Initialize();
+            tkSystem.Initialize();
+            cpSystem.Initialize();
             
             // 저장된 데이터 불러오기
             var initData = GameObject.FindObjectOfType<InGameInitData>();
@@ -264,6 +273,21 @@ namespace YS
                 target.position = bezier.GetBezierPosition(t);
                 yield return wf;
             }
+        }
+        public IEnumerator CharacterFadeEffect(Image img, bool isOut, float time)
+        {
+            WaitForSeconds wf = CachedWaitForSeconds.Get(0.01f);
+            float curTime = 0.0f;
+            Color c = Color.white;
+
+            while (curTime < time)
+            {
+                c.a = isOut ? (1 - (curTime / time)) : curTime / time;
+                img.color = c;
+                yield return wf;
+                curTime += 0.01f;
+            }
+            img.color = isOut ? new Color(1.0f, 1.0f, 1.0f, 0.0f) : Color.white;
         }
         public IEnumerator FadeEffect(bool isOut, float time)
         {

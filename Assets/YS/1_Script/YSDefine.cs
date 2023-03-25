@@ -22,11 +22,13 @@ namespace YS
         // Path
         public static string ItemDatah => "Data/ItemData";
         public static string BackgroundData => "Data/BackgroundData";
+        public static string ClueData => "Data/ClueData";
         public static string PuzzleData => "Data/PuzzleData";
         public static string ScriptData => "Data/ScriptData";
         // Prefab
         public static string BGItemPrefab => "Prefab/BGItemPrefab";
         public static string PuzzlePiecePrefab => "Prefab/PuzzlePiecePrefab";
+        public static string FingerprintPrefab => "Prefab/FingerprintPrefab";
         // Image
         public static string LoadPreviewDefaultImg => "Image/LoadPreviewDefaultImg";
         // Material
@@ -78,6 +80,30 @@ namespace YS
             index = item.index;
             pos = item.transform.localPosition;
         }
+    }
+    [System.Serializable]
+    public struct FingerprintData
+    {
+        [LabelText("지문 이미지")]
+        public Sprite img;
+        [LabelText("지문 위치")]
+        public Vector3 pos;
+
+        public FingerprintData(Image fp)
+        {
+            img = fp.sprite;
+            pos = fp.transform.localPosition;
+        }
+    }
+    [System.Serializable]
+    public struct ClueData
+    {
+        [LabelText("단서 이름"), DisableContextMenu]
+        public string name;
+        [LabelText("단서 이미지")]
+        public Sprite img;
+        [LabelText("아이템들")]
+        public List<FingerprintData> fds;
     }
     public class ResourceManager
     {
