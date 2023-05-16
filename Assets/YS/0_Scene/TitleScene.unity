@@ -3887,11 +3887,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bookComp: {fileID: 41380802}
   bookImgs:
-  - {fileID: 21300000, guid: b85050c83db242e4eafba8f57eb350d9, type: 3}
-  - {fileID: 21300000, guid: b0c18c676ab4d4343adc234472e1d618, type: 3}
-  - {fileID: 21300000, guid: 86cccff4f962a034c841b8a741b9d50b, type: 3}
-  - {fileID: 21300000, guid: 9ad9c7be1dcdd6d45ab6e643fc600a88, type: 3}
-  - {fileID: 21300000, guid: a8371807677c9624f95debc13138fe33, type: 3}
+  - {fileID: 21300000, guid: c1bb39386c06b624db0d083f4430b5f7, type: 3}
+  - {fileID: 21300000, guid: ac607f82199ce2c4ea651494403a751f, type: 3}
+  - {fileID: 21300000, guid: c1bb39386c06b624db0d083f4430b5f7, type: 3}
+  - {fileID: 21300000, guid: ac607f82199ce2c4ea651494403a751f, type: 3}
+  - {fileID: 21300000, guid: 02f30acb4d59b4d49ac9321d8e958e77, type: 3}
   menuPanel: {fileID: 550065500}
   loadPanel: {fileID: 1918752506}
   albumPanel: {fileID: 187741612}
