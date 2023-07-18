@@ -51,8 +51,11 @@ namespace YS
         [LabelText("이어하기 버튼")]
         public LoadButton[] loadGameBtns;
         [BoxGroup("불러오기")]
-        [LabelText("챕터 로드 버튼")]
-        public ChapterHighlighter[] loadChapterBtns;
+        [LabelText("챕터 이미지 컴포넌트")]
+        public Image chapterImage;
+        [BoxGroup("불러오기")]
+        [LabelText("챕터 이미지들")]
+        public Sprite[] chapterSprites;
         [BoxGroup("불러오기")]
         [LabelText("로드패널 나가기 버튼")]
         public Button exitLoadBtn;
@@ -132,6 +135,8 @@ namespace YS
                 };
             });
             settingBtnInMain.onClick.AddListener(() => { settingComp.OpenWindow(); });
+
+            chapterImage.sprite = chapterSprites[SaveDataManager.Instance.UnlockChapter];
         }
         private void Update()
         {

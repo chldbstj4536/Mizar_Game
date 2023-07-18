@@ -15,7 +15,11 @@ namespace YS
         private const string AesIV = "IFw2csnrFl4ZmXe/XihYrA==";
 
         private SaveData data;
-        public int UnlockChapter => data.unlockChapter;
+        public uint UnlockChapter
+        {
+            get { return data.unlockChapter; }
+            set { if (value > data.unlockChapter) data.unlockChapter = value; }
+        }
 
         public SaveDataManager() { LoadData(); }
 
@@ -159,7 +163,7 @@ namespace YS
     [Serializable]
     public struct SaveData
     {
-        public int unlockChapter;
+        public uint unlockChapter;
         public List<InGameSaveData> inGameSaveDatas;
 
         public InGameSaveData this[int index]

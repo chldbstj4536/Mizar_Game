@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Sirenix.OdinInspector;
 
 namespace YS
@@ -23,6 +24,18 @@ namespace YS
         public void SetScript(int index)
         {
             curScript?.OnExit();
+            curIndex = index;
+            if (curIndex >= scripts.Count)
+            {
+                GameObject loadDataObj = new GameObject("LoadData");
+                var loadData = loadDataObj.AddComponent<LoadingData>();
+                loadData.loadingScene = LOADING_SCENE.TITLE;
+                GameObject.DontDestroyOnLoad(loadDataObj);
+
+                SceneManager.LoadScene(0);
+                return;
+            }
+
             curScript = scripts[curIndex = index];
             curScript.OnEnter();
         }

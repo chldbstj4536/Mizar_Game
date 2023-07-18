@@ -15,6 +15,7 @@ MonoBehaviour:
   scripts:
   - id: 0
   - id: 1
+  - id: 2
   varDatas: []
   addKey: 
   addValue: 1
@@ -61,3 +62,7 @@ MonoBehaviour:
         answerData:
           name: "\uC54C\uD401\uC2A4 \uAE38"
           fpImg: {fileID: 21300000, guid: 26870c414d7a23c4c9c93e3a985f0302, type: 3}
+    00000002:
+      type: {class: UnlockChapterEvent, ns: YS, asm: Assembly-CSharp}
+      data:
+        unlockChapter: 1
